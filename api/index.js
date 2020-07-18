@@ -34,7 +34,8 @@ app.use(express.urlencoded({
 
 const transporter = nodemailer.createTransport({
 
-    host: 'smtp.gmail.com',
+    // host: 'smtp.gmail.com',
+    service:'Gmail',
     port: 587,
     secure:false,
     auth: {
