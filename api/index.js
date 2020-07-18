@@ -30,31 +30,9 @@ app.use(express.urlencoded({
 
 
 const auth = {
-    user: process.env.THE_EMAIL,
+        user: process.env.THE_EMAIL,
         pass: process.env.THE_PASSWORD
-}
-
-
-// const transporter = nodemailer.createTransport({
-//
-//     host: 'smtp.gmail.com',
-//     port: 587,
-//     secure:false,
-//     // requireTLS: true,
-//     auth: {
-//         user: process.env.THE_EMAIL,
-//         pass: process.env.THE_PASSWORD
-//     }
-// });
-
-// transporter.verify((error, success) => {
-//     if (error) {
-//         console.log("_____VERIFY ERROR_____");
-//         console.log(error);
-//     } else {
-//         console.log('Server is ready to take messages');
-//     }
-// });
+};
 
 
 
@@ -63,29 +41,8 @@ app.post('/api/send', (req, res) => {
     console.log("_____REQUEST_____");
     console.log(req.body);
     try {
-        // const mailOptions = {
-        //     from: req.body.email,
-        //     to: 'daniel.jnw.lee@outloo.com',
-        //     text: req.body.message
-        // };
-
-        //
-        // transporter.sendMail(mailOptions, function(err, info) {
-        //     if (err) {
-        //         console.log("____INFO______");
-        //         console.info(err);
-        //         res.status(500).send({
-        //             success: false,
-        //             message: 'ERROR 500: Something went wrong sending the email. Try again later'
-        //         });
-        //     } else {
-        //         res.send({
-        //             success: true,
-        //             message: 'Thanks for contacting us. We will get back to you shortly'
-        //         });
-        //     }
-        // });
         nodeoutlook.sendEmail({
+
                 auth: {
                     user: auth.user,
                     pass: auth.pass
@@ -102,7 +59,7 @@ app.post('/api/send', (req, res) => {
                 },
                 onSuccess: (i) => res.send({
                                 success: true,
-                                message: 'Thanks for contacting us. We will get back to you shortly'
+                                message: 'Thanks for contacting me. I will get back to you shortly'
                             })
             }
         );

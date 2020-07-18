@@ -11,19 +11,12 @@ const App = () =>
 
     return (
         <div>
-
-            {/*<Switch>*/}
-            {/*    <Route exact path='/' component={App}>*/}
                     <Navbar/>
                     <Intro/>
                     <AboutMe/>
                     <Projects/>
                     <ScrollToTop/>
                     <Contact/>
-            {/*    </Route>*/}
-            {/*    <Route path='/about-me' component={AboutMe}/>*/}
-            {/*    <Route path='/project' component={App} />*/}
-            {/*</Switch>*/}
         </div>
 
     );
