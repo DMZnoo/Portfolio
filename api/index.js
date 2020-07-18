@@ -53,19 +53,8 @@ transporter.verify((error, success) => {
     }
 });
 
-// router.get('/',cors(),(req,res) =>{
-//
-// });
 
 
-
-// app.get('*', function(req, res,next) {
-//     res.render('error');
-// });
-
-// app.get('/', function (req, res) {
-//     res.send("HELLO") ;
-// })
 
 app.post('/api/send', (req, res) => {
     console.log("_____REQUEST_____");
