@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.05ced5cd.chunk.css",
+    "main.js": "/static/js/main.0baff29f.chunk.js",
+    "main.js.map": "/static/js/main.0baff29f.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.c6e37e88.js",
+    "runtime-main.js.map": "/static/js/runtime-main.c6e37e88.js.map",
+    "static/css/2.9b5f5f6d.chunk.css": "/static/css/2.9b5f5f6d.chunk.css",
+    "static/js/2.d6086baf.chunk.js": "/static/js/2.d6086baf.chunk.js",
+    "static/js/2.d6086baf.chunk.js.map": "/static/js/2.d6086baf.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.b24256962c775a9222ff7a3324b3f506.js": "/precache-manifest.b24256962c775a9222ff7a3324b3f506.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.9b5f5f6d.chunk.css.map": "/static/css/2.9b5f5f6d.chunk.css.map",
+    "static/css/main.05ced5cd.chunk.css.map": "/static/css/main.05ced5cd.chunk.css.map",
+    "static/js/2.d6086baf.chunk.js.LICENSE.txt": "/static/js/2.d6086baf.chunk.js.LICENSE.txt",
+    "static/media/Electronic_Music.png": "/static/media/Electronic_Music.98405787.png",
+    "static/media/semantic.min.css": "/static/media/outline-icons.ef60a4f6.woff",
+    "static/media/profile.png": "/static/media/profile.3e4e981c.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c6e37e88.js",
+    "static/css/2.9b5f5f6d.chunk.css",
+    "static/js/2.d6086baf.chunk.js",
+    "static/css/main.05ced5cd.chunk.css",
+    "static/js/main.0baff29f.chunk.js"
+  ]
+}

@@ -1,0 +1,259 @@
+@import url(https://fonts.googleapis.com/css2?family=Orbitron);
+@import url(https://fonts.googleapis.com/css2?family=Dosis);
+$Orbitron:'Orbitron',sans-serif;
+$Dosis: 'Dosis',sans-serif;
+@media (min-width: 800px) {
+    .large-menu a {
+        color: DarkOrange;
+        font-size: 2vw;
+    }
+}
+
+.small-menu a {
+    color: Skyblue;
+    text-decoration: line-through;
+}
+html, body, #root, #root>div {
+    height: 100%;
+    //overflow:overlay;
+}
+body #root *
+{
+
+    font-family: $Orbitron;
+}
+
+body #root .aboutMe
+{
+    //font-family:$Dosis;
+    font-weight:500;
+    font-size:1.5em;
+
+}
+
+i.icon
+{
+    font-family: Icons !important;
+}
+#root .content *
+{
+    font-weight:400;
+}
+.container {
+    padding: 0 10px 0 10px;
+}
+$textDur: 1050ms;
+$waveDur: 2100ms;
+.text {
+    color: #000;
+    //font-size: 1rem;
+    font-weight: 900;
+    display: inline-block;
+    //position: absolute;
+    bottom: 0;
+    animation: text $textDur ease-in infinite;
+    transform: translatez(0);
+    &-a {
+        left: 0rem;
+        //transform: translate3d(0, -1rem, 0);
+        //animation: text-a $textDur ease-in infinite;
+    }
+    &-u {
+        left: 5.4rem;
+        animation-delay: 150ms;
+    }
+    &-d {
+        left: 9.6rem;
+        animation-delay: 230ms;
+    }
+    &-i {
+        left: 13rem;
+        animation-delay: 310ms;
+    }
+    &-o {
+        left: 15rem;
+        animation-delay: 400ms;
+    }
+}
+@keyframes text {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    30% {
+        transform: translate3d(0, 0, 0);
+    }
+    45% {
+        transform: translate3d(0, -1rem, 0);
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+//@keyframes text-a {
+//    0% {
+//        transform: translate3d(0, -1rem, 0);
+//    }
+//    38% {
+//        transform: translate3d(0, -1rem, 0);
+//    }
+//    69% {
+//        transform: translate3d(0, 0, 0);
+//    }
+//    100% {
+//        transform: translate3d(0, -1rem, 0);
+//    }
+//}
+
+.graphics {
+    background: 50% 100% / 50% 50% no-repeat
+    radial-gradient(ellipse at bottom, #000, transparent, transparent);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: reveal 3000ms ease-in-out forwards 200ms,
+    glow 2500ms linear infinite 2000ms;
+
+@keyframes reveal {
+    80%{
+        letter-spacing: 10px;
+    }
+    100% {
+        background-size: 200% 200%;
+    }
+}
+@keyframes glow {
+    40% {
+        text-shadow: 0 0 8px #fff;
+    }
+}
+}
+
+.assessmentList .cell
+{
+    display:inline;
+    padding-left:1vw;
+}
+.assessmentContent
+{
+    height: 15vh;
+}
+.assessmentContent .cell
+{
+    display:inline;
+
+}
+.assessmentContent .cell .image img
+{
+    max-height:10vh;
+    //max-width:10vw;
+
+}
+.assessmentContent .cell i
+{
+    padding-left:2vw;
+}
+.demo1
+{
+    left:5vw;
+    top:4.5vh;
+    position:absolute;
+}
+
+.demo2
+{
+    left:54vw;
+    top:4.5vh;
+    position:absolute;
+}
+@media (max-width:767px)
+{
+    .assessmentList .cell
+    {
+        font-size: 2.5vw;
+        align-content: center;
+    }
+    .assessmentContent .cell i
+    {
+        padding-left:3vw;
+    }
+    .assessmentContent .cell .image img
+    {
+        max-height:10vh;
+        max-width:10vw;
+
+    }
+    .assessmentContent .cell .image
+    {
+        max-width:5vw;
+    }
+    .demo1
+    {
+        left:5vw;
+        top:12.5vh;
+        position:absolute;
+        font-size:0.5em !important;
+    }
+    .demo2
+    {
+        left:53vw;
+        top:12.5vh;
+        position:absolute;
+        font-size:0.5em !important;
+    }
+}
+
+[class*=" devicon-"], [class^=devicon-]
+{
+    font-size: 5vw;
+}
+.intro
+{
+    margin-top:20vh;
+}
+@media (max-width:1149px)
+{
+    .intro
+    {
+        margin-top:0;
+    }
+    .max-screen-navbar
+    {
+        display:none;
+        z-index:-1;
+    }
+}
+.scrollTop {
+    position: fixed;
+    width: 100%;
+    bottom: 20px;
+    align-items: center;
+    height: 20px;
+    left:45vw;
+    justify-content: center;
+    z-index: 1000;
+    cursor: pointer;
+    animation: fadeIn 0.3s;
+    transition: opacity 0.4s;
+    opacity: 0.5;
+}
+
+.scrollTop:hover{
+    opacity: 1;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0.5;
+    }
+}
+.styles_header__3PFGX
+{
+    background-color:rgba(25,100,50,1) !important;
+}
+
+html {
+    scroll-behavior: smooth;
+}
