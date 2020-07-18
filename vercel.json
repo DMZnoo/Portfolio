@@ -1,22 +1,14 @@
 {
-  "builds": [{
-    "src": "index.js",
-    "use": "@now/node-server"
-  }],
+  "version": 2,
+  "public": false,
+  "builds": [
+    {"src": "index.js", "use": "@now/node-server"},
+    { "src": "package.json", "use": "@now/static-build" }
+  ],
 
-  "routes": [{
-    "headers": {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "X-Requested-With, Content-Type, Accept"
-    },
-    "src": "/(.*)",
-    "dest": "index.js"
-  }],
-  "scripts": {
-    "start-server": "nodemon index.js",
-    "client": "npm start --prefix Portfolio-Website",
-    "build": "npm install && npm run start",
-    "start": "concurrently \"npm run start-server\" \"npm run client\""
-  }
+  "routes": [
+    { "src": "/.*", "dest": "/index.js" },
+    { "src": "^/static/(.*)", "dest": "/static/$1" },
+    { "src": ".*", "dest": "/index.html" }
+  ]
 }
