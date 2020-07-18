@@ -70,13 +70,11 @@ const Contact = () => {
                         name="name"
                         type="text"
                         className="form-control"
-                        // value={state.name}
                         placeholder="Full Name"
                         ref={register({
                             required: true,
                             message: "Please state your name!"
                         })}
-                        // onChange={onInputChange}
                     />
                     {errors.name?.type === "required" &&
                     "Your name is required"}
@@ -87,7 +85,6 @@ const Contact = () => {
                         name="email"
                         ype="email"
                         className="form-control"
-                        // value={state.email}
                         aria-describedby="emailHelp"
                         ref={register({
                             required: true,
@@ -108,11 +105,9 @@ const Contact = () => {
                         name="message"
                         className="form-control"
                         rows="5"
-                        // value={state.message}
                         ref={register({
                             required: true,
                         })}
-                        // onChange={onInputChange}
                     >
 
                     </textarea>
