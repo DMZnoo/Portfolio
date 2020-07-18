@@ -12,5 +12,11 @@
     },
     "src": "/(.*)",
     "dest": "index.js"
-  }]
+  }],
+  "scripts": {
+    "start-server": "nodemon index.js",
+    "client": "npm start --prefix Portfolio-Website",
+    "build": "npm install && npm run start",
+    "start": "concurrently \"npm run start-server\" \"npm run client\""
+  }
 }
