@@ -11,15 +11,6 @@ function AboutMe() {
     const SlideInLeftOnce = styled.div`animation: 2s ${keyframes`${slideInLeft}`} 1 `;
     const SlideInRight = styled.div`animation: 2s ${keyframes`${slideInRight}`} infinite `;
 
-    // useEffect(()=>{
-    //     window.scrollTo({
-    //         top: 400,
-    //         behavior: 'smooth',
-    //     })
-    //     console.log("HERE1");
-    // });
-
-
     return(
             <div>
             <div className="ui center aligned segment">

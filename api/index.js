@@ -29,7 +29,10 @@ app.use(express.urlencoded({
 
 
 
-
+const auth = {
+    user: process.env.THE_EMAIL,
+        pass: process.env.THE_PASSWORD
+}
 
 
 // const transporter = nodemailer.createTransport({
@@ -84,8 +87,8 @@ app.post('/api/send', (req, res) => {
         // });
         nodeoutlook.sendEmail({
                 auth: {
-                    user: process.env.THE_EMAIL,
-                    pass: process.env.THE_PASSWORD
+                    user: auth.user,
+                    pass: auth.pass
                 },
                 from: req.body.email,
                 to: 'daniel.jnw.lee@outlook.com',

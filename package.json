@@ -39,7 +39,7 @@
     "styled-components": "^5.1.1"
   },
   "scripts": {
-    "start": "run-p start:**",
+    "start": "react-scripts start",
     "start:app": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -60,5 +60,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:5000"
 }
