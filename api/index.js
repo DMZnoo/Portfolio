@@ -47,9 +47,9 @@ app.post('/api/send', (req, res) => {
                     user: auth.user,
                     pass: auth.pass
                 },
-                from: req.body.email,
+                from: 'daniel.jnw.lee@outlook.com',
                 to: 'daniel.jnw.lee@outlook.com',
-                subject: req.body.name,
+                subject: req.body.name + req.body.email,
                 html: req.body.message,
                 text: req.body.message,
                 onError: (e) => {res.status(500).send({
