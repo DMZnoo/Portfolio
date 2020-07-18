@@ -6,7 +6,7 @@ const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
 // app.use(cors());
-const nodemailer = require('nodemailer');
+const nodeoutlook = require('nodejs-nodemailer-outlook');
 const port = process.env.PORT || 5000;
 // app.use(cors({
 //     origin: "http://localhost:3000",
@@ -32,26 +32,26 @@ app.use(express.urlencoded({
 
 
 
-const transporter = nodemailer.createTransport({
+// const transporter = nodemailer.createTransport({
+//
+//     host: 'smtp.gmail.com',
+//     port: 587,
+//     secure:false,
+//     // requireTLS: true,
+//     auth: {
+//         user: process.env.THE_EMAIL,
+//         pass: process.env.THE_PASSWORD
+//     }
+// });
 
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure:false,
-    requireTLS: true,
-    auth: {
-        user: process.env.THE_EMAIL,
-        pass: process.env.THE_PASSWORD
-    }
-});
-
-transporter.verify((error, success) => {
-    if (error) {
-        console.log("_____VERIFY ERROR_____");
-        console.log(error);
-    } else {
-        console.log('Server is ready to take messages');
-    }
-});
+// transporter.verify((error, success) => {
+//     if (error) {
+//         console.log("_____VERIFY ERROR_____");
+//         console.log(error);
+//     } else {
+//         console.log('Server is ready to take messages');
+//     }
+// });
 
 
 
@@ -66,21 +66,42 @@ app.post('/api/send', (req, res) => {
             text: req.body.message
         };
 
-        transporter.sendMail(mailOptions, function(err, info) {
-            if (err) {
-                console.log("____INFO______");
-                console.info(err);
-                res.status(500).send({
-                    success: false,
-                    message: 'ERROR 500: Something went wrong sending the email. Try again later'
-                });
-            } else {
-                res.send({
-                    success: true,
-                    message: 'Thanks for contacting us. We will get back to you shortly'
-                });
+        //
+        // transporter.sendMail(mailOptions, function(err, info) {
+        //     if (err) {
+        //         console.log("____INFO______");
+        //         console.info(err);
+        //         res.status(500).send({
+        //             success: false,
+        //             message: 'ERROR 500: Something went wrong sending the email. Try again later'
+        //         });
+        //     } else {
+        //         res.send({
+        //             success: true,
+        //             message: 'Thanks for contacting us. We will get back to you shortly'
+        //         });
+        //     }
+        // });
+        nodeoutlook.sendEmail({
+                auth: {
+                    user: process.env.THE_EMAIL,
+                    pass: process.env.THE_PASSWORD
+                },
+                from: req.body.email,
+                to: 'daniel.jnw.lee@outlook.com',
+                subject: req.body.name,
+                html: req.body.message,
+                text: req.body.message,
+                onError: (e) => {res.status(500).send({
+                                success: false,
+                                message: 'ERROR 500: Something went wrong sending the email. Try again later'
+                            });},
+                onSuccess: (i) => res.send({
+                                success: true,
+                                message: 'Thanks for contacting us. We will get back to you shortly'
+                            })
             }
-        });
+        );
     } catch (error) {
         console.info(error);
         res.status(500).send({
