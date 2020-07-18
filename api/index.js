@@ -82,7 +82,7 @@ app.post('/api/send', (req, res) => {
                 console.info(err);
                 res.status(500).send({
                     success: false,
-                    message: 'Something went wrong. Try again later'
+                    message: 'ERROR 500: Something went wrong sending the email. Try again later'
                 });
             } else {
                 res.send({
@@ -92,7 +92,6 @@ app.post('/api/send', (req, res) => {
             }
         });
     } catch (error) {
-        console.log("CAUGHT ERROR");
         console.info(error);
         res.status(500).send({
             success: false,
