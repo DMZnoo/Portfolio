@@ -70,6 +70,8 @@ transporter.verify((error, success) => {
 app.post('/api/send', (req, res) => {
     console.log("_____REQUEST_____");
     console.log(req.body);
+    console.log("USER: "+process.env.THE_EMAIL);
+    console.log("PW: " +process.env.THE_PASSWORD);
     try {
         const mailOptions = {
             from: req.body.email,
