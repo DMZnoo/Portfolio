@@ -4,11 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:server": "nodemon index.js",
-    "client": "npm start --prefix Portfolio-Website",
-    "build": "npm run start",
-    "start": "concurrently \"npm run start-server\" \"npm run client\"",
-    "now-build": "npm run build --prefix Portfolio-Website && mv Portfolio-Website/build dist"
+    "start": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
