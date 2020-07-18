@@ -62,9 +62,9 @@ transporter.verify((error, success) => {
 //     res.render('error');
 // });
 
-app.get('/', function (req, res) {
-    res.send("HELLO") ;
-})
+// app.get('/', function (req, res) {
+//     res.send("HELLO") ;
+// })
 
 app.post('/send', (req, res) => {
     console.log("_____REQUEST_____");

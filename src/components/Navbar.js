@@ -1,26 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {ReactNavbar} from "react-responsive-animate-navbar";
+import logo from '../resources/logo-removebg-preview.png'
 
 const Navbar = () => {
-    // const didMountRef = useRef(false);
-    // useEffect( () => {
-    //     if (didMountRef.current) {
-    //
-    //         document.querySelectorAll("html body .styles_navLinks__38tON ul li")[0].addEventListener('click', e=>{
-    //             window.scrollTo({
-    //                 top: 400,
-    //                 behavior: 'smooth',
-    //             });
-    //             console.log("HOME");
-    //         });
-    //     } else
-    //     {
-    //         didMountRef.current = true;
-    //         console.log("HERE")
-    //     }
-    //
-    //
-    // });
     const [isHovered,SetHovered] = useState(false);
     useEffect(() => {
         let childId = ['aboutme','aboutme','project','contact'];
@@ -97,7 +79,7 @@ const Navbar = () => {
         >
         <ReactNavbar
             color="rgb(25,100,50)"
-            logo='logo-removebg-preview.png'
+            logo={logo}
 
             menu={[
                 { name: "HOME", to: "/" },
