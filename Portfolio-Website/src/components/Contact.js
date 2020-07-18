@@ -21,7 +21,6 @@ const Contact = () => {
     });
 
     const onFormSubmit = (values) => {
-        //event.preventDefault();
         console.log("REQUEST_BODY");
         console.log(values);
         axios
