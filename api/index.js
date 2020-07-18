@@ -66,7 +66,7 @@ transporter.verify((error, success) => {
 //     res.send("HELLO") ;
 // })
 
-app.post('/send', (req, res) => {
+app.post('/api/send', (req, res) => {
     console.log("_____REQUEST_____");
     console.log(req.body);
     try {

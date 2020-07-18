@@ -24,7 +24,7 @@ const Contact = () => {
         console.log("REQUEST_BODY");
         console.log(values);
         axios
-            .post('/send',
+            .post('/api/send',
                 {...values}
                 )
             .then(response => {
