@@ -60,11 +60,11 @@ app.post('/api/send', (req, res) => {
     console.log("_____REQUEST_____");
     console.log(req.body);
     try {
-        const mailOptions = {
-            from: req.body.email,
-            to: 'daniel.jnw.lee@gmail.com',
-            text: req.body.message
-        };
+        // const mailOptions = {
+        //     from: req.body.email,
+        //     to: 'daniel.jnw.lee@outloo.com',
+        //     text: req.body.message
+        // };
 
         //
         // transporter.sendMail(mailOptions, function(err, info) {
@@ -95,7 +95,8 @@ app.post('/api/send', (req, res) => {
                 onError: (e) => {res.status(500).send({
                                 success: false,
                                 message: 'ERROR 500: Something went wrong sending the email. Try again later'
-                            });},
+                            });
+                },
                 onSuccess: (i) => res.send({
                                 success: true,
                                 message: 'Thanks for contacting us. We will get back to you shortly'
