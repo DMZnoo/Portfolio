@@ -7,7 +7,7 @@
     "start-server": "nodemon index.js",
     "client": "npm start --prefix Portfolio-Website",
     "build": "npm run start",
-    "start": "concurrently \"npm run start-server\" \"npm run client\""
+    "start": "concurrently \"npm run start-server\" \"npm start --prefix Portfolio-Website\""
   },
   "keywords": [],
   "author": "",
