@@ -18,7 +18,8 @@
     "googleapis": "^55.0.0",
     "morgan": "^1.10.0",
     "nodejs-nodemailer-outlook": "^1.2.3",
-    "nodemailer": "^6.4.10"
+    "nodemailer": "^6.4.10",
+    "prop-types": "^15.7.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

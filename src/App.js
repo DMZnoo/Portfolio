@@ -6,18 +6,28 @@ import Projects from "./components/Projects";
 import ScrollToTop from "./components/ScrollToTop";
 import {withRouter} from 'react-router';
 import Contact from "./components/Contact";
+import { Route, Switch} from "react-router-dom";
+import Cover from "./Cover";
 const App = () =>
 {
 
     return (
-        <div>
+        <main>
+            <Switch>
+                <Route exact path="/">
+                    <Cover/>
+                </Route>
+                <Route path='/about'>
                     <Navbar/>
-                    <Intro/>
+                    <Intro />
                     <AboutMe/>
                     <Projects/>
                     <ScrollToTop/>
                     <Contact/>
-        </div>
+                </Route>
+            </Switch>
+
+        </main>
 
     );
 };

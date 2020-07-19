@@ -5,6 +5,7 @@ import logo from '../resources/logo-removebg-preview.png'
 const Navbar = () => {
     const [isHovered,SetHovered] = useState(false);
     useEffect(() => {
+
         let childId = ['aboutme','aboutme','project','contact'];
         const mainNavChildren = document.querySelectorAll("html body .styles_navLinks__38tON ul li a");
         const mobileNavChildren = document.querySelectorAll("html body .MobileNav_MoNavLinks__mNUdF ul li a")
