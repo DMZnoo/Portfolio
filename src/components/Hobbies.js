@@ -15,7 +15,7 @@ const Hobbies = ({config}) => {
             <div className={`ui center ${config.segmentColor} segment`}
                  onMouseEnter={() => handleClick(true)}
                  onMouseLeave={() => handleClick(false)}
-                 onClick={()=>handleClick(false)}
+                 onClick={()=>handleClick(!isToggled)}
             >
                 <h3>
                     {!config.image && (
