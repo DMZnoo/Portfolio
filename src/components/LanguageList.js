@@ -30,7 +30,7 @@ const language = [
     {
         prof:"web",
         lang:'devicon-react-original-wordmark colored',
-        proficiency: 3
+        proficiency: 4
     },
     {
         prof:"web",
@@ -46,6 +46,16 @@ const language = [
         prof:"web",
         lang: 'devicon-rails-plain-wordmark colored',
         proficiency:3
+    },
+    {
+        prof:"web",
+        lang: "devicon-nodejs-plain-wordmark colored",
+        proficiency:4
+    },
+    {
+        prof:"web",
+        lang: "devicon-express-original-wordmark colored",
+        proficiency: 5
     }
 
 ];
