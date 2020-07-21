@@ -4,18 +4,17 @@ const Hobbies = ({config}) => {
     const [isShown, SetShown] = useState(false);
     const [isToggled,SetToggle] = useState('down');
     const handleClick=(bool)=>{
+        SetShown(bool);
         if(bool)
             SetToggle('up');
         else
             SetToggle("down");
-        SetShown(bool);
+
     };
     return(
-        <div>
+        <div onClick={()=>handleClick(!isShown)}>
             <div className={`ui center ${config.segmentColor} segment`}
-                 onMouseEnter={() => handleClick(true)}
-                 onMouseLeave={() => handleClick(false)}
-                 onClick={()=>handleClick(!isToggled)}
+
             >
                 <h3>
                     {!config.image && (
