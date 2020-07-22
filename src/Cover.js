@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import styled, {keyframes} from 'styled-components';
 import {slideOutUp,slideOutDown} from 'react-animations';
-import {Link} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import DelayLink from "./DelayLink";
 
 
-const Cover = () => {
+const Cover = ({onClick}) => {
+    const history = useHistory();
     const SlideOutUp = styled.div`animation: 2s ${keyframes`${slideOutUp}`} 1 `;
     const SlideOutDown = styled.div`animation: 2s ${keyframes`${slideOutDown}`} 1 `;
     const [isButtonClicked,SetButtonClick] = useState(
@@ -16,6 +17,11 @@ const Cover = () => {
             transition:false
         }
     );
+    function setOnClick(param1,param2){
+        SetButtonClick({[param1]:true,[param2]:true});
+        onClick(true);
+        history.push("/");
+    }
 
     return (
         <div className="ui segments">
@@ -39,8 +45,7 @@ const Cover = () => {
                         }}
                         className="ui cell inverted right labeled icon red button"
                         delay={1500}
-                        onDelayStart={()=>SetButtonClick({web:true,transition:true})}
-
+                        onDelayStart={()=>setOnClick("web","transition")}
                         style={{width:"auto",fontSize:"1em"}}
                     ><i className="right arrow icon"></i>Front/Back-end Developer</DelayLink>
                     <DelayLink
@@ -50,7 +55,7 @@ const Cover = () => {
                         }}
                         className=" ui cell inverted right labeled icon blue button"
                         delay={1500}
-                        onDelayStart={()=>SetButtonClick({software:true,transition:true})}
+                        onDelayStart={()=>setOnClick("software","transition")}
                         state={isButtonClicked}
                         style={{width:"auto",fontSize:"1em"}}
                     ><i className="right arrow icon"></i>Software Engineer</DelayLink>
@@ -61,7 +66,7 @@ const Cover = () => {
                         }}
                         className=" ui cell inverted right labeled icon violet button"
                         delay={1500}
-                        onDelayStart={()=>SetButtonClick({ml:true,transition:true})}
+                        onDelayStart={()=>setOnClick("ml","transition")}
                         state={isButtonClicked}
                         style={{width:"auto",fontSize:"1em"}}
                     ><i className="right arrow icon"></i>Machine Learning Engineer</DelayLink>
