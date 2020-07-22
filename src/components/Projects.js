@@ -61,7 +61,7 @@ const Projects = () => {
 
 
     return(
-        <div className="ui center aligned segment" id="project">
+        <div className="ui center aligned segment">
                 {isProfession==="software" && (
                     <div className="ui grid">
                         <div className="two column row">

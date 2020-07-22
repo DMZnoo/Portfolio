@@ -52,9 +52,9 @@ function AboutMe() {
     },[location]);
     return(
             <div>
-            <div className="ui center aligned segment">
+            <div className="ui center aligned segment" id="aboutme">
 
-                <h1 className="ui header" style={{fontWeight:"900"}} id="aboutme">
+                <h1 className="ui header" style={{fontWeight:"900"}}>
                     <SlideInLeft style={{display:"inline-block"}}>
                         <i className="caret right icon" style={{textAlign:"left",fontSize:"1em"}}/>
                     </SlideInLeft>
@@ -90,7 +90,7 @@ function AboutMe() {
 
             </div>
             <HistoryOfMe/>
-            <div className="ui center aligned segment">
+            <div className="ui center aligned segment" id="project">
                 <h1 className="ui header" style={{fontWeight:"900"}}>
                     <SlideInLeft style={{display:"inline-block"}}>
                         <i className="caret right icon" style={{textAlign:"left",fontSize:"1em"}}/>
