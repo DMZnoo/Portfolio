@@ -30,7 +30,7 @@ const Cover = () => {
             )
             }
             <div className="ui segment grid choices" style={{border:'none'}}>
-                <h1 className="ui cell">You would like me to be..</h1>
+                <h1 className="ui cell">Portfolio Categories</h1>
                 <div className="ui segment grid choices" style={{border:'none'}}>
                     <DelayLink
                         to={{

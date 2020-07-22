@@ -6,7 +6,6 @@ import "video-react";
 
 const SoftwareProjects = ({config}) =>
 {
-
     const [isShown, SetIsShown] = useState(false);
     const [isPlayable,SetPlayable] = useState(false);
 
