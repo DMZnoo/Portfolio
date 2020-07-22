@@ -26,7 +26,7 @@ const softwareConfig =
             button:"demo1",
             description:
                 "This project was done as part of the graphics and animation class at AUT. I've learned how to build a camera and load obj files as part of the scene. The cube skymap was used to render the sky.",
-            style:customStyles
+            style: customStyles
         },
         {
             projectTitle:"Solar System Simulation",
@@ -36,7 +36,7 @@ const softwareConfig =
             button:"demo2",
             description:
                 "The camera tracking of the nearest object and some basic light system in GLSL shaders were the major learning outcome of this project. The space was rendered with an inverted sphere with its texture applied inside out.",
-            style:customStyles
+            style: customStyles
         }
     ];
 const webConfig =

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import ReactPlayer from "react-player";
 // import webproject1 from "../../resources/web-project-1.png";
 import Modal from "react-modal";
+import "video-react";
 
 const SoftwareProjects = ({config}) =>
 {
@@ -45,18 +46,22 @@ const SoftwareProjects = ({config}) =>
 
                 }
 
+                <div className="react-player-wrapper">
+                    <ReactPlayer
+                        className="react-player"
+                        playsInline
+                        width='100%'
+                        height='100%'
+                        url={config.projectURL}
+                        volume={1}
+                        muted={true}
+                        loop={false}
+                        playing={isPlayable ? false:true}
+                        // controls={isPlayable==1 ? 0 : 1}
+                        controls={true}
+                    ></ReactPlayer>
+                </div>
 
-                <ReactPlayer
-                    url={config.projectURL}
-                    width='45vw'
-                    height="40vh"
-                    volume={1}
-                    muted={true}
-                    loop={false}
-                    playing={isPlayable ? false:true}
-                    // controls={isPlayable==1 ? 0 : 1}
-                    controls={true}
-                ></ReactPlayer>
                 {modalIsOpen && (
                     <Modal
                         isOpen={modalIsOpen}

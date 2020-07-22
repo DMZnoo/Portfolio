@@ -9,6 +9,7 @@ import Contact from "./components/Contact";
 import { Route, Switch} from "react-router-dom";
 import Cover from "./Cover";
 import styled from 'styled-components';
+
 const App = () =>
 {
     const AppWrapper = styled.div`
@@ -16,12 +17,6 @@ const App = () =>
         margin:auto;
         align-content: center;
     `;
-    // html body
-    // {
-    //     width:90%;
-    //     margin:auto;
-    //     align-content: center;
-    // }
 
     return (
         <main>
@@ -32,7 +27,7 @@ const App = () =>
                 <Route path='/about'>
                     <Navbar/>
                     <AppWrapper>
-                        <Intro />
+                        <Intro/>
                         <AboutMe/>
                         <Projects/>
                         <ScrollToTop/>
