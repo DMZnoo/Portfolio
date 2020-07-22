@@ -16,22 +16,22 @@ const WebProjects = ({config}) => {
         setIsOpen(!modalN);
     }
     return (
-        <div className="cell"
+        <div className="ui column grid"
              onMouseEnter={() => (detectMouse(true))}
              onMouseLeave={() => (detectMouse(false))}
              onClick={()=>(detectMouse(true))}
         >
             {!modalIsOpen && (
-                <div>
+                <div className="ui ten wide column">
                     <button
                         className={`ui orange inverted button ${config.button}`}
                         onClick={() => setIsOpen(true)}
-                        style={{opacity:isShown ? 1:0,transition: "opacity 1s",zIndex:"5"}}>Learn More</button>
+                        style={{opacity:isShown ? 1:0,transition: "opacity 1s",zIndex:"5",fontSize:"1em",position:"relative"}}>Learn More</button>
                 </div>
             )
 
             }
-            <div className="ui large image" style={{borderRadius:"50%",paddingTop:"7em", width:"90vw",zIndex:"0"}}>
+            <div className="ui large image column" style={{borderRadius:"50%", width:"90vw",zIndex:"0"}}>
                 <img src={webproject1}/>
             </div>
             {modalIsOpen && (
@@ -40,21 +40,22 @@ const WebProjects = ({config}) => {
                     onRequestClose={()=>setIsOpen(false)}
                     style={config.style}
                     contentLabel="Example Modal"
-
+                    style={{zIndex:"10",overflow:"scroll"}}
                 >
-                    <div className="ui segment" style={{width:"100%",height:"100%",zIndex:"6"}}>
+                    <div className="ui segment" style={{width:"100%",height:"90%",zIndex:"10"}}>
                         <h2>{config.projectTitle}</h2>
-                        <h4>Written in: {config.languageUsed} </h4>
-                        <div className="grid">
-                            <div className="cell">
-                                <p>Check out the website: </p>
-                            </div>
-                            <div className="cell">
-                                <a href={config.projectURL} target="_blank">LINK</a>
-                            </div>
-                        </div>
+                        <h4>Technologies: </h4>
+                        <p>{config.languageUsed}</p>
+                        <h4>Description: </h4>
+                        <p>
+                            {config.description}
+                        </p>
+                        <h4>Repository: </h4>
+                        <p>
+                            Check out the repository: <a href={config.repoURL} target="_blank"> URL</a>
+                        </p>
                     </div>
-                    <div className="ui vertical segment">
+                    <div className="ui vertical segment" style={{paddingTop: "1em"}}>
                         <button className="ui red inverted button" onClick={()=>closeModal(true)}>close</button>
                     </div>
 

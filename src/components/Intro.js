@@ -13,7 +13,7 @@ const Intro = () => {
     },[location]);
     return (
         <div className="intro">
-            <NavbarTransitionFix/>
+            {/*<NavbarTransitionFix/>*/}
             <div className="ui center aligned segment">
                 <SlideIn>
                     <div className="ui centered small circular image" style={{borderRadius:"50%",padding: "0em", maxHeight:"50rem",maxWidth:"50rem",zIndex:"5"}}>

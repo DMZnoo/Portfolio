@@ -19,6 +19,16 @@ html, body, #root, #root>div {
     height: 100%;
     //overflow:overlay;
 }
+html
+{
+    align-content: center;
+}
+html body
+{
+    width:90%;
+    margin:auto;
+    align-content: center;
+}
 body #root *
 {
 
@@ -154,19 +164,19 @@ $waveDur: 2100ms;
 {
     padding-left:2vw;
 }
-.demo1
+.demo1, .demo2
 {
-    left:5vw;
-    top:4.5vh;
+    //left:5vw;
+    //top:4.5vh;
     position:absolute;
 }
 
-.demo2
-{
-    left:54vw;
-    top:4.5vh;
-    position:absolute;
-}
+//.demo2
+//{
+//    left:54vw;
+//    top:4.5vh;
+//    position:absolute;
+//}
 @media (max-width:767px)
 {
     .assessmentList .cell
@@ -188,22 +198,26 @@ $waveDur: 2100ms;
     {
         max-width:5vw;
     }
+    .software-projects
+    {
+        width:90vw;
+        height:40vh;
+    }
     .demo1
     {
-        left:5vw;
-        top:12.5vh;
-        position:absolute;
-        font-size:0.5em !important;
+        //left:5vw;
+        //top:12.5vh;
+        //position:absolute;
+        font-size:0.7em !important;
     }
     .demo2
     {
-        left:53vw;
-        top:12.5vh;
-        position:absolute;
-        font-size:0.5em !important;
+        //left:53vw;
+        //top:12.5vh;
+        //position:absolute;
+        font-size:0.7em !important;
     }
 }
-
 [class*=" devicon-"], [class^=devicon-]
 {
     font-size: 5vw;
@@ -212,8 +226,17 @@ $waveDur: 2100ms;
 {
     margin-top:20vh;
 }
+@media (min-width:768px)
+{
+    .software-projects
+    {
+        width:40vw;
+        height:40vh;
+    }
+}
 @media (max-width:1149px)
 {
+
     .intro
     {
         margin-top:0;
