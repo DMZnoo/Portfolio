@@ -75,6 +75,7 @@ const Navbar = () => {
     });
     return (
         <div
+            className="navbar-wrapper"
             onMouseEnter={()=>SetHovered(true)}
             onMouseLeave={()=>SetHovered(false)}
         >

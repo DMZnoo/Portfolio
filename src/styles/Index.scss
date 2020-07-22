@@ -17,18 +17,13 @@ $bottom-img: url('../resources/red-stripes.jpg');
 }
 html, body, #root, #root>div {
     height: 100%;
-    //overflow:overlay;
 }
 html
 {
     align-content: center;
 }
-html body
-{
-    width:90%;
-    margin:auto;
-    align-content: center;
-}
+
+
 body #root *
 {
 
@@ -37,7 +32,6 @@ body #root *
 
 body #root .aboutMe
 {
-    //font-family:$Dosis;
     font-weight:500;
     font-size:1.5em;
 
@@ -58,17 +52,14 @@ $textDur: 1050ms;
 $waveDur: 2100ms;
 .text {
     color: #000;
-    //font-size: 1rem;
     font-weight: 900;
     display: inline-block;
-    //position: absolute;
+
     bottom: 0;
     animation: text $textDur ease-in infinite;
     transform: translatez(0);
     &-a {
-        left: 0rem;
-        //transform: translate3d(0, -1rem, 0);
-        //animation: text-a $textDur ease-in infinite;
+        left: 0;
     }
     &-u {
         left: 5.4rem;
@@ -102,20 +93,6 @@ $waveDur: 2100ms;
     }
 }
 
-//@keyframes text-a {
-//    0% {
-//        transform: translate3d(0, -1rem, 0);
-//    }
-//    38% {
-//        transform: translate3d(0, -1rem, 0);
-//    }
-//    69% {
-//        transform: translate3d(0, 0, 0);
-//    }
-//    100% {
-//        transform: translate3d(0, -1rem, 0);
-//    }
-//}
 
 .graphics {
     background: 50% 100% / 50% 50% no-repeat
@@ -166,17 +143,10 @@ $waveDur: 2100ms;
 }
 .demo1, .demo2
 {
-    //left:5vw;
-    //top:4.5vh;
+
     position:absolute;
 }
 
-//.demo2
-//{
-//    left:54vw;
-//    top:4.5vh;
-//    position:absolute;
-//}
 @media (max-width:767px)
 {
     .assessmentList .cell
@@ -203,20 +173,11 @@ $waveDur: 2100ms;
         width:90vw;
         height:40vh;
     }
-    .demo1
+    .demo1,.demo2
     {
-        //left:5vw;
-        //top:12.5vh;
-        //position:absolute;
         font-size:0.7em !important;
     }
-    .demo2
-    {
-        //left:53vw;
-        //top:12.5vh;
-        //position:absolute;
-        font-size:0.7em !important;
-    }
+
 }
 [class*=" devicon-"], [class^=devicon-]
 {
@@ -240,11 +201,6 @@ $waveDur: 2100ms;
     .intro
     {
         margin-top:0;
-    }
-    .max-screen-navbar
-    {
-        display:none;
-        z-index:-1;
     }
 }
 .scrollTop {
@@ -287,23 +243,16 @@ html {
 {
     width: 100vw;
     height: 45vh;
-    //transition-delay: 500ms;
-    //transition: all 1.5s ease-in-out;
     background-image: $top-img;
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
-//#root .top-cover:hover {
-//    transform: translateY(-50vh);
-//
-//}
+
 
 #root .bottom-cover
 {
     width: 100vw;
     height: 45vh;
-    //transition-delay: 500ms;
-    //transition: all 1.5s ease-in-out;
     background-image: $bottom-img;
     -moz-transform: scaleY(-1);
     -o-transform: scaleY(-1);
@@ -317,28 +266,11 @@ html {
 {
     width: 100vw;
     height: 45vh;
-    //transition-delay: 500ms;
-    //transition: all 1.5s ease-in-out;
 }
-//#root .bottom-cover-div:hover
-//{
-//    transform: translateY(50vh);
-//
-//}
-//#root .bottom-cover:hover {
-//    //-moz-transform: scaleY(-1);
-//    //-o-transform: scaleY(-1);
-//    //-webkit-transform: scaleY(-1);
-//    //transform: scaleY(1);
-//
-//    transform: translateY(50vh);
-//
-//}
 
 #root .choices
 {
     width:100vw;
-    //maxHeight:10vh;
     z-index:1000;
 }
 
