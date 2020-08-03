@@ -12,8 +12,8 @@ const customStyles = {
         bottom                : 'auto',
         marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)',
-        width:"90%",
-        height:"60%"
+        width:"90vw",
+        height:"60vh"
     }
 };
 const softwareConfig =
@@ -46,7 +46,12 @@ const webConfig =
             projectURL:"https://developer.orionhealth.io/",
             languageUsed:"JQuery,CSS,Gulp,Node.js",
             button:"demo1",
-            description:"This was part of my summer internship in 2019. For this project, I was assigned to improve the front end of the website. The major changes would be the side bar. I had included the search bar and method drop downs for better navigation",
+            description:"This was part of my summer internship in 2019. For this project, " +
+                "I was assigned to improve the front end of the website. " +
+                "Major changes include: " +
+                "implemented the search bar from scratch \n" +
+                "implemented JSON sample response panel for the API page\n" +
+                "resolved minor bugs/scaling issues across the site",
             style:customStyles
         }
     ]
