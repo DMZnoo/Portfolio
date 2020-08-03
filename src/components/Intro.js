@@ -14,7 +14,7 @@ const Intro = () => {
         <div className="intro">
             <div className="ui center aligned segment">
                 <SlideIn>
-                    <div className="ui centered small circular image" style={{borderRadius:"50%",padding: "0em", maxHeight:"50rem",maxWidth:"50rem",zIndex:"5"}}>
+                    <div className="ui centered small circular image" style={{borderRadius:"50%",padding: "0em", maxHeight:"50rem",maxWidth:"50rem"}}>
                         <img src={profilePhoto}/>
                     </div>
                 </SlideIn>

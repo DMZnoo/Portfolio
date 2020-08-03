@@ -14,7 +14,7 @@ const customStyles = {
         transform             : 'translate(-50%, -50%)',
         width:"90vw",
         height:"60vh",
-        overflowY: "scroll"
+        zIndex:"1000"
     }
 };
 const softwareConfig =

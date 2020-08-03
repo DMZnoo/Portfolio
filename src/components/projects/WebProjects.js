@@ -40,9 +40,8 @@ const WebProjects = ({config}) => {
                     onRequestClose={()=>setIsOpen(false)}
                     style={config.style}
                     contentLabel="Example Modal"
-                    style={{zIndex:"10"}}
                 >
-                    <div className="ui segment" style={{width:"100%",height:"90%",zIndex:"10",overflow:"scroll"}}>
+                    <div className="ui segment" style={{width:"100%",height:"90%",zIndex:"1000",overflow:"scroll"}}>
                         <h2>{config.projectTitle}</h2>
                         <h4>Technologies: </h4>
                         <p>{config.languageUsed}</p>
