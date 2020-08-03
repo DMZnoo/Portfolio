@@ -13,7 +13,8 @@ const customStyles = {
         marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)',
         width:"90vw",
-        height:"60vh"
+        height:"60vh",
+        overflow: "scroll"
     }
 };
 const softwareConfig =
