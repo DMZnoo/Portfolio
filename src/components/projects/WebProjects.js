@@ -49,6 +49,7 @@ const WebProjects = ({config}) => {
                         <h4>Description: </h4>
                         <p>
                             {config.description}
+                            {config.descList}
                         </p>
                         <h4>Repository: </h4>
                         <p>

@@ -48,11 +48,14 @@ const webConfig =
             languageUsed:"JQuery,CSS,Gulp,Node.js",
             button:"demo1",
             description:"This was part of my summer internship in 2019. For this project, " +
-                "I was assigned to improve the front end of the website. " +
-                "Major changes include: " +
-                "implemented the search bar from scratch \n" +
-                "implemented JSON sample response panel for the API page\n" +
-                "resolved minor bugs/scaling issues across the site",
+                "I was assigned to improve the front end of the website. Major changes include: ",
+            descList:
+                <ul>
+                    <li>implemented the search bar/functionality from scratch</li>
+                    <li>implemented JSON sample response panel for the API page</li>
+                    <li>resolved minor bugs/scaling issues across the site</li>
+                </ul>
+            ,
             style:customStyles
         }
     ]
