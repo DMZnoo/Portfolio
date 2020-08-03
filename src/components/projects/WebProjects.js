@@ -5,6 +5,7 @@ import Modal from "react-modal";
 const WebProjects = ({config}) => {
     const [isShown, SetIsShown] = useState(false);
     const [modalIsOpen,setIsOpen] = useState(false);
+
     function detectMouse(n)
     {
         SetIsShown(n);
@@ -26,7 +27,7 @@ const WebProjects = ({config}) => {
                     <button
                         className={`ui orange inverted button ${config.button}`}
                         onClick={() => setIsOpen(true)}
-                        style={{opacity:isShown ? 1:0,transition: "opacity 1s",zIndex:"5",fontSize:"1em",position:"relative"}}>Learn More</button>
+                        style={{fontSize:"1em",position:"relative"}}>Learn More</button>
                 </div>
             )
 

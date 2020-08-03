@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import ReactPlayer from "react-player";
-// import webproject1 from "../../resources/web-project-1.png";
 import Modal from "react-modal";
 import "video-react";
+
 
 const SoftwareProjects = ({config}) =>
 {
@@ -35,11 +35,11 @@ const SoftwareProjects = ({config}) =>
 
             >
                 {!modalIsOpen && (
-                    <div>
+                    <div className="ui ten wide column">
                         <button
                             className={`ui orange inverted button ${config.button}`}
                             onClick={() => setIsOpen(true)}
-                            style={{opacity:isShown ? 1:0,transition: "opacity 1s",zIndex:"5"}}>Learn More</button>
+                            style={{position:"relative",marginBottom:"1vh"}}>Learn More</button>
                     </div>
                 )
 

@@ -80,7 +80,6 @@ const Projects = () => {
                             <div className="ui segment">
                                 <SoftwareProjects config={softwareConfig[1]}/>
                             </div>
-                            {/*<SoftwareProjects config={softwareConfig[1]}/>*/}
                         </div>
 
                     </div>
