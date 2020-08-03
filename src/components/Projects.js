@@ -73,9 +73,14 @@ const Projects = () => {
         <div className="ui center aligned segment">
                 {isProfession==="software" && (
                     <div className="ui grid">
-                        <div className="two column row">
-                            <SoftwareProjects config={softwareConfig[0]}/>
-                            <SoftwareProjects config={softwareConfig[1]}/>
+                        <div className="column">
+                            <div class="ui segment">
+                                <SoftwareProjects config={softwareConfig[0]}/>
+                            </div>
+                            <div className="ui segment">
+                                <SoftwareProjects config={softwareConfig[1]}/>
+                            </div>
+                            {/*<SoftwareProjects config={softwareConfig[1]}/>*/}
                         </div>
 
                     </div>

@@ -66,9 +66,9 @@ const SoftwareProjects = ({config}) =>
                         isOpen={modalIsOpen}
                         onRequestClose={()=>setIsOpen(false)}
                         style={config.style}
-                        contentLabel="Example Modal"
+                        contentLabel="Project Modal"
                     >
-                        <div className="ui segment" style={{width:"100%",height:"100%",zIndex:"10"}}>
+                        <div className="ui segment" style={{width:"100%",height:"100%",zIndex:"1000",overflow:"scroll"}}>
                             <h2>{config.projectTitle}</h2>
                             <h4>Technologies: </h4>
                             <p>{config.languageUsed}</p>

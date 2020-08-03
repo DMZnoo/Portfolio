@@ -180,11 +180,11 @@ $waveDur: 2100ms;
     {
         max-width:5vw;
     }
-    .software-projects
-    {
-        width:90vw;
-        height:40vh;
-    }
+    //.software-projects
+    //{
+    //    width:90vw;
+    //    height:40vh;
+    //}
     .demo1,.demo2
     {
         font-size:0.7em !important;
@@ -201,11 +201,11 @@ $waveDur: 2100ms;
 }
 @media (min-width:768px)
 {
-    .software-projects
-    {
-        width:40vw;
-        height:40vh;
-    }
+    //.software-projects
+    //{
+    //    width:40vw;
+    //    height:40vh;
+    //}
 }
 @media (max-width:1149px)
 {

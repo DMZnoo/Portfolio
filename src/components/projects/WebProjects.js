@@ -39,7 +39,7 @@ const WebProjects = ({config}) => {
                     isOpen={modalIsOpen}
                     onRequestClose={()=>setIsOpen(false)}
                     style={config.style}
-                    contentLabel="Example Modal"
+                    contentLabel="Project Modal"
                 >
                     <div className="ui segment" style={{width:"100%",height:"90%",zIndex:"1000",overflow:"scroll"}}>
                         <h2>{config.projectTitle}</h2>
