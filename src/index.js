@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+
 import "./styles/Index.scss";
 import App from './App';
 import 'semantic-ui-css/semantic.min.css';
