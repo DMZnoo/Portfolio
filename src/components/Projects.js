@@ -43,6 +43,7 @@ const softwareConfig =
 const webConfig =
     [
         {
+            id:1,
             projectTitle:"Orion Health Developer Portal",
             projectURL:"https://developer.orionhealth.io/",
             languageUsed:"JQuery,CSS,Gulp,Node.js",
@@ -54,6 +55,22 @@ const webConfig =
                     <li>implemented the search bar/functionality from scratch</li>
                     <li>implemented JSON sample response panel for the API page</li>
                     <li>resolved minor bugs/scaling issues across the site</li>
+                </ul>
+            ,
+            style:customStyles
+        },
+        {
+            id:2,
+            projectTitle:"Starwars API",
+            projectURL:"https://starwars-api.dmznoo.vercel.app/",
+            languageUsed:"React,Axios",
+            button:"demo1",
+            description:"This project was done to learn how to fetch the API. " +
+                "Learning outcomes include: ",
+            descList:
+                <ul>
+                    <li>Fetch/read JSON from the API</li>
+                    <li>Dynamically generate pages via API endpoint</li>
                 </ul>
             ,
             style:customStyles
@@ -88,6 +105,7 @@ const Projects = () => {
             {isProfession==="web" && (
                 <div className="ui grid">
                     <WebProjects config={webConfig[0]}/>
+                    <WebProjects config={webConfig[1]}/>
                 </div>
             )
 

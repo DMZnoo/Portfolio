@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import webproject1 from '../../resources/web-project-1.png';
+import webproject2 from '../../resources/web-project-2.png'
 import Modal from "react-modal";
 
 const WebProjects = ({config}) => {
@@ -17,7 +18,7 @@ const WebProjects = ({config}) => {
         setIsOpen(!modalN);
     }
     return (
-        <div className="ui column grid"
+        <div className="ui columns grid"
              onMouseEnter={() => (detectMouse(true))}
              onMouseLeave={() => (detectMouse(false))}
              onClick={()=>(detectMouse(true))}
@@ -33,7 +34,8 @@ const WebProjects = ({config}) => {
 
             }
             <div className="ui large image column" style={{borderRadius:"50%", width:"90vw",zIndex:"0"}}>
-                <img src={webproject1}/>
+                {config.id === 1 && (<img src={webproject1}/>)}
+                {config.id === 2 && (<img src={webproject2}/>)}
             </div>
             {modalIsOpen && (
                 <Modal

@@ -44,4 +44,4 @@ const App = () =>
     );
 };
 
-export default a(App);
+export default withRouter(App);
