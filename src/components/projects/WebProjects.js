@@ -55,7 +55,7 @@ const WebProjects = ({config}) => {
                         </p>
                         <h4>Repository: </h4>
                         <p>
-                            Check out the repository: <a href={config.repoURL} target="_blank"> URL</a>
+                            Check out the repository: <a href={config.projectURL} target="_blank"> URL</a>
                         </p>
                     </div>
                     <div className="ui vertical segment" style={{paddingTop: "1em"}}>
