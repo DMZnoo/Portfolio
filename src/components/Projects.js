@@ -63,14 +63,15 @@ const webConfig =
             id:2,
             projectTitle:"Starwars API",
             projectURL:"https://starwars-api.dmznoo.vercel.app/",
-            languageUsed:"React,Axios",
+            languageUsed:"React,Axios,Redux",
             button:"demo1",
-            description:"This project was done to learn how to fetch the API. " +
+            description:"This project was done to learn how to use the API as backend. " +
                 "Learning outcomes include: ",
             descList:
                 <ul>
                     <li>Fetch/read JSON from the API</li>
                     <li>Dynamically generate pages via API endpoint</li>
+                    <li>Using redux to store API's pagination data</li>
                 </ul>
             ,
             style:customStyles
