@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import styled, { keyframes } from 'styled-components';
 import Hobbies from './Hobbies';
 import LanguageList from "./LanguageList";
-import HistoryOfMe from "./HistoryOfMe";
+import MyBackground from "./MyBackground";
 import "grid-css/grid.min.css";
 import { slideInLeft, slideInRight, } from 'react-animations';
 import {useLocation} from "react-router-dom";
@@ -89,7 +89,7 @@ function AboutMe() {
 
 
             </div>
-            <HistoryOfMe/>
+            <MyBackground/>
             <div className="ui center aligned segment" id="project">
                 <h1 className="ui header" style={{fontWeight:"900"}}>
                     <SlideInLeft style={{display:"inline-block"}}>

@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {slideInDown,slideInUp} from "react-animations";
 import styled, { keyframes } from 'styled-components';
-const HistoryOfMe = () => {
+const MyBackground = () => {
     const [isShown, SetIsShown] = useState(false);
 
     const SlideInDown = styled.div`animation: 2s ${keyframes`${slideInDown}`} 1 `;
@@ -50,4 +50,4 @@ const HistoryOfMe = () => {
     )
 };
 
-export default HistoryOfMe;
+export default MyBackground;
