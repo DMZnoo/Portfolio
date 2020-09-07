@@ -10,7 +10,6 @@ const Hobbies = () => {
     useEffect(()=>{
         let icons = [SwimmingIcon,MusicIcon]
         for(let i in hobbiesConfig) {
-            console.log(i)
             SetShown(isShown => [...isShown, false])
             if(hobbiesConfig[i].image){
                 SetIcon(isIcon=>[...isIcon,<img src={icons.shift()}
