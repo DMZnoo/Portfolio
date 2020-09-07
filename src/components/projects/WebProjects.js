@@ -3,7 +3,7 @@ import webproject1 from '../../resources/web-project-1.png';
 import webproject2 from '../../resources/web-project-2.png';
 import webproject3 from '../../resources/web-project-3.png';
 import { Button, Header, Image, Modal } from 'semantic-ui-react'
-import webConfig from './webConfig.json'
+import webConfig from '../config/webConfig.json'
 const WebProjects = () => {
     const [isConfig,SetConfig] = useState(webConfig)
     const [modalIsOpen,setIsOpen] = useState([false,false,false]);

@@ -2,7 +2,7 @@ import React, { useState} from "react";
 import ReactPlayer from "react-player";
 import { Button, Header, Modal } from 'semantic-ui-react'
 import "video-react";
-import softwareConfig from './softwareConfig.json'
+import softwareConfig from '../config/softwareConfig.json'
 
 const SoftwareProjects = () =>
 {

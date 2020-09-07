@@ -1,0 +1,30 @@
+[
+  {
+    "hobby":"Gym",
+    "image":false,
+    "icon":"heartbeat icon",
+    "content":"I've been into weight lifting for 10+ years. Les Mills member since 2 0 1 8! :)",
+    "segmentColor":"red"
+  },
+  {
+    "hobby":"Piano",
+    "image":false,
+    "icon":"music icon",
+    "content":"I've always been into music and had recently picked up piano as a hobby :)",
+    "segmentColor":"purple"
+  },
+  {
+    "hobby":"Swimming",
+    "image":true,
+    "ImageICON": "../resources/swimming.png",
+  "content":"Swimmer since I was 9. Definitely not afraid of the water :)",
+  "segmentColor":"blue"
+  },
+  {
+    "hobby":"Electronic Music",
+    "image":true,
+    "ImageICON":"../resources/Electronic_Music.png",
+  "content":"I find it great for programming. I've also gone to several raves/festivals.",
+  "segmentColor":"yellow"
+  }
+]
