@@ -1,11 +1,23 @@
 import React, {useState,useEffect} from 'react';
 import hobbiesConfig from './config/hobbiesConfig.json'
+import SwimmingIcon from "../resources/swimming.png"
+import MusicIcon from "../resources/Electronic_Music.png"
 const Hobbies = () => {
     const [isConfig, SetConfig] = useState(hobbiesConfig);
-    const [isShown, SetShown] = useState([false,false,false,false]);
+    const [isShown, SetShown] = useState([]);
+    const [isIcon,SetIcon] = useState([]);
+
     useEffect(()=>{
+        let icons = [SwimmingIcon,MusicIcon]
         for(let i in hobbiesConfig) {
+            console.log(i)
             SetShown(isShown => [...isShown, false])
+            if(hobbiesConfig[i].image){
+                SetIcon(isIcon=>[...isIcon,<img src={icons.shift()}
+                                                style={{width: "1.5em", paddingRight: "0.3em", height: "1em"}}/>])
+            } else {
+                SetIcon(isIcon=>[...isIcon,null])
+            }
         }
     },[])
 
@@ -23,8 +35,7 @@ const Hobbies = () => {
                             <h3>
                                 <>
                                 {config.image ? (
-                                    <img src={`${config.ImageICON}`}
-                                         style={{width: "1.5em", paddingRight: "0.3em", height: "1em"}}/>
+                                    isIcon[idx]
                                 ) :(
                                     <i className={`${config.icon} icon`}/>
                                 )

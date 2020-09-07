@@ -1,5 +1,6 @@
 [
   {
+    "id": 0,
     "hobby":"Gym",
     "image":false,
     "icon":"heartbeat icon",
@@ -7,6 +8,7 @@
     "segmentColor":"red"
   },
   {
+    "id": 1,
     "hobby":"Piano",
     "image":false,
     "icon":"music icon",
@@ -14,16 +16,16 @@
     "segmentColor":"purple"
   },
   {
+    "id": 2,
     "hobby":"Swimming",
     "image":true,
-    "ImageICON": "../resources/swimming.png",
   "content":"Swimmer since I was 9. Definitely not afraid of the water :)",
   "segmentColor":"blue"
   },
   {
+    "id": 3,
     "hobby":"Electronic Music",
     "image":true,
-    "ImageICON":"../resources/Electronic_Music.png",
   "content":"I find it great for programming. I've also gone to several raves/festivals.",
   "segmentColor":"yellow"
   }
