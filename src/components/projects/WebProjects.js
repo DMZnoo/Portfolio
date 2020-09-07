@@ -30,7 +30,7 @@ const WebProjects = () => {
                                 onClose={() => setIsOpen(modalIsOpen=>[...modalIsOpen.slice(0,config.id),false,...modalIsOpen.slice(config.id+1)])}
                                 onOpen={() => setIsOpen(modalIsOpen=>[...modalIsOpen.slice(0,config.id),true,...modalIsOpen.slice(config.id+1)])}
                                 open={modalIsOpen[config.id]}
-                                trigger={<Button>Show Modal</Button>}
+
                             >
                                 <Modal.Header>Select a Photo</Modal.Header>
                                 <Modal.Content image>
