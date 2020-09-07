@@ -1,0 +1,44 @@
+[
+  {
+    "id":0,
+    "projectTitle":"Orion Health Developer Portal",
+    "projectURL":"https://developer.orionhealth.io/",
+    "techStack":"JQuery,CSS,Gulp,Node.js",
+    "button":"demo1",
+    "description":"This was part of my summer internship in 2019. For this project, I was assigned to improve the front end of the website. Major changes include: ",
+    "descList":[
+                "implemented the library free site wide search",
+                "implemented JSON sample response panel for the API page",
+                "resolved minor bugs/front-end issues across the site"
+                ]
+
+  },
+  {
+    "id":1,
+    "projectTitle":"Starwars API",
+    "projectURL":"https://starwars-api.dmznoo.vercel.app/",
+    "techStack":"React,Redux,Express,NodeJS",
+    "button":"demo1",
+    "description":"This project was done to learn how to use the API as backend. ",
+    "descList": [
+      "Fetch/read JSON from the API",
+      "Dynamically generate pages via API endpoint",
+      "Using redux to store API's pagination data"
+    ]
+  },
+  {
+    "id": 2,
+    "projectTitle": "Workout Logging Website",
+    "projectURL": "https://www.logyourworkouts.com/",
+    "techStack": "MongoDB (Atlas),Express,React,NodeJS - [MERN] Stack,AWS EC2,NGINX",
+    "button": "demo1",
+    "description": "This project was mainly done for learning, but also was done for the real need of having a logging site for myself and for other friends of mine (as it is FREE).",
+    "descList": [
+      "AWS Deployment",
+      "Reverse Proxy with NGINX and PM2 for continuous integration/running server",
+      "Refining my knowledge on React Hooks",
+      "Different way of doing Pagination"
+    ]
+
+  }
+]

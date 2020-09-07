@@ -1,22 +1,8 @@
 import React, {useEffect, useState} from 'react'
-import ReactPlayer from "react-player";
-import Modal from 'react-modal';
 import { useLocation } from 'react-router-dom';
 import SoftwareProjects from "./projects/SoftwareProjects";
 import WebProjects from "./projects/WebProjects";
-const customStyles = {
-    content : {
-        top                   : '50%',
-        left                  : '50%',
-        right                 : 'auto',
-        bottom                : 'auto',
-        marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)',
-        width:"90vw",
-        height:"60vh",
-        zIndex:"1000"
-    }
-};
+
 const softwareConfig =
     [
         {
@@ -27,7 +13,6 @@ const softwareConfig =
             button:"demo1",
             description:
                 "This project was done as part of the graphics and animation class at AUT. I've learned how to build a camera and load obj files as part of the scene. The cube skymap was used to render the sky.",
-            style: customStyles
         },
         {
             projectTitle:"Solar System Simulation",
@@ -37,13 +22,12 @@ const softwareConfig =
             button:"demo2",
             description:
                 "The camera tracking of the nearest object and some basic light system in GLSL shaders were the major learning outcome of this project. The space was rendered with an inverted sphere with its texture applied inside out.",
-            style: customStyles
         }
     ];
 const webConfig =
     [
         {
-            id:1,
+            id:0,
             projectTitle:"Orion Health Developer Portal",
             projectURL:"https://developer.orionhealth.io/",
             languageUsed:"JQuery,CSS,Gulp,Node.js",
@@ -56,11 +40,9 @@ const webConfig =
                     <li>implemented JSON sample response panel for the API page</li>
                     <li>resolved minor bugs/scaling issues across the site</li>
                 </ul>
-            ,
-            style:customStyles
         },
         {
-            id:2,
+            id:1,
             projectTitle:"Starwars API",
             projectURL:"https://starwars-api.dmznoo.vercel.app/",
             languageUsed:"React,Axios,Redux",
@@ -73,8 +55,6 @@ const webConfig =
                     <li>Dynamically generate pages via API endpoint</li>
                     <li>Using redux to store API's pagination data</li>
                 </ul>
-            ,
-            style:customStyles
         }
     ]
 const Projects = () => {
@@ -92,12 +72,7 @@ const Projects = () => {
                 {isProfession==="software" && (
                     <div className="ui grid">
                         <div className="column">
-                            <div class="ui segment">
-                                <SoftwareProjects config={softwareConfig[0]}/>
-                            </div>
-                            <div className="ui segment">
-                                <SoftwareProjects config={softwareConfig[1]}/>
-                            </div>
+                            <SoftwareProjects config={softwareConfig[0]}/>
                         </div>
 
                     </div>
@@ -105,8 +80,7 @@ const Projects = () => {
                 }
             {isProfession==="web" && (
                 <div className="ui grid">
-                    <WebProjects config={webConfig[0]}/>
-                    <WebProjects config={webConfig[1]}/>
+                    <WebProjects/>
                 </div>
             )
 

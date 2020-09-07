@@ -1,95 +1,95 @@
 import React, { useState} from "react";
 import ReactPlayer from "react-player";
-import Modal from "react-modal";
+import { Button, Header, Modal } from 'semantic-ui-react'
 import "video-react";
+import softwareConfig from './softwareConfig.json'
 
-
-const SoftwareProjects = ({config}) =>
+const SoftwareProjects = () =>
 {
-    const [isShown, SetIsShown] = useState(false);
+    const [isConfig,SetConfig] = useState(softwareConfig);
     const [isPlayable,SetPlayable] = useState(false);
-
     const [modalIsOpen,setIsOpen] = useState(false);
 
     function detectMouse(n)
     {
-        SetIsShown(n);
         SetPlayable(n);
-    }
-    function closeModal(modalN){
-        SetIsShown(modalN);
-        SetPlayable(modalN);
-        setIsOpen(!modalN);
     }
 
 
 
     return (
-        <div
-            className="cell software-projects"
-        >
-            <div
-                 onMouseEnter={() => (detectMouse(true))}
-                 onMouseLeave={() => (detectMouse(false))}
-                 onClick={()=>(detectMouse(true))}
+        <div className={"ui segment"}>
+            {isConfig.map((config)=>{
+                return(
+                    <div
+                        className="cell software-projects"
+                    >
+                        <div
+                            onMouseEnter={() => (detectMouse(true))}
+                            onMouseLeave={() => (detectMouse(false))}
+                            onClick={()=>(detectMouse(true))}
 
-            >
-                {!modalIsOpen && (
-                    <div className="ui ten wide column">
-                        <button
-                            className={`ui orange inverted button ${config.button}`}
-                            onClick={() => setIsOpen(true)}
-                            style={{position:"relative",marginBottom:"1vh"}}>Learn More</button>
+                        >
+                            <div className="ui ten wide column">
+                                <button
+                                    className={`ui orange inverted button ${config.button}`}
+                                    onClick={() => setIsOpen(true)}
+                                    style={{position:"relative",marginBottom:"1vh"}}>Learn More</button>
+                            </div>
+                            <div className="react-player-wrapper">
+                                <ReactPlayer
+                                    className="react-player"
+                                    playsInline
+                                    width='100%'
+                                    height='100%'
+                                    url={config.projectURL}
+                                    volume={1}
+                                    muted={true}
+                                    loop={false}
+                                    playing={isPlayable ? false:true}
+                                    // controls={isPlayable==1 ? 0 : 1}
+                                    controls={true}
+                                ></ReactPlayer>
+                            </div>
+
+                            {modalIsOpen && (
+                                <Modal
+                                    onClose={() => setIsOpen(false)}
+                                    onOpen={() => setIsOpen(true)}
+                                    open={modalIsOpen}
+                                    trigger={<Button>Show Modal</Button>}
+                                >
+                                    <Modal.Header>Select a Photo</Modal.Header>
+                                    <Modal.Content image>
+                                        <Modal.Description>
+                                            <Header>{config.projectTitle}</Header>
+                                            <h4>Technologies: </h4>
+                                            <p>{config.languageUsed}</p>
+                                            <h4>Description: </h4>
+                                            <div className={"description"}>
+                                                {config.description}
+                                                {config.descList}
+                                            </div>
+                                        </Modal.Description>
+                                    </Modal.Content>
+                                    <Modal.Actions>
+                                        <Button color='black' onClick={() => setIsOpen(false)}>
+                                            Close
+                                        </Button>
+                                        <a className="ui positive right labeled icon button"
+                                           onClick={() => setIsOpen(false)}
+                                           href={config.projectURL} target="_blank">Go</a>
+                                    </Modal.Actions>
+                                </Modal>
+                            )
+
+                            }
+                        </div>
                     </div>
                 )
+            })
 
-                }
-
-                <div className="react-player-wrapper">
-                    <ReactPlayer
-                        className="react-player"
-                        playsInline
-                        width='100%'
-                        height='100%'
-                        url={config.projectURL}
-                        volume={1}
-                        muted={true}
-                        loop={false}
-                        playing={isPlayable ? false:true}
-                        // controls={isPlayable==1 ? 0 : 1}
-                        controls={true}
-                    ></ReactPlayer>
-                </div>
-
-                {modalIsOpen && (
-                    <Modal
-                        isOpen={modalIsOpen}
-                        onRequestClose={()=>setIsOpen(false)}
-                        style={config.style}
-                        contentLabel="Project Modal"
-                    >
-                        <div className="ui segment" style={{width:"100%",height:"100%",zIndex:"1000",overflow:"scroll"}}>
-                            <h2>{config.projectTitle}</h2>
-                            <h4>Technologies: </h4>
-                            <p>{config.languageUsed}</p>
-                            <h4>Description: </h4>
-                            <p>
-                                {config.description}
-                            </p>
-                            <h4>Repository: </h4>
-                            <p>
-                                Check out the repository: <a href={config.repoURL} target="_blank"> URL</a>
-                            </p>
-                        </div>
-                        <div className="ui vertical segment">
-                            <button className="ui red inverted button" onClick={()=>closeModal(true)}>close</button>
-                        </div>
-
-                    </Modal>
-                )
-
-                }
-            </div>
+            }
         </div>
 
     )
