@@ -42,7 +42,7 @@
     "id": 3,
     "projectTitle": "React Youtube Clone",
     "projectURL": "https://youtube-clone.dmznoo.vercel.app",
-    "techstack": "React",
+    "techStack": "React",
     "description": "This project is demo purpose only as youtube limits daily access to 100. I've done this as part of a course in Udemy. But all done in Hooks instead of class components",
     "descList":[
       "Fetch/read JSON from the Youtube API"
