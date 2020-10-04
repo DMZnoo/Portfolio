@@ -33,7 +33,7 @@
     "descList": [
       "AWS Deployment",
       "Reverse Proxy with NGINX and PM2 for continuous integration/running server",
-      "Refining my knowledge on React Hooks",
+      "Refining my knowledge on React Hooks & Context API",
       "Different way of doing Pagination"
     ]
 
