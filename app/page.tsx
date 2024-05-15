@@ -7,8 +7,10 @@ export default function Home() {
       <div className="lg:flex lg:justify-between lg:gap-4">
         <header className="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between lg:py-24">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight text-slate-200 sm:text-5xl">
-              <a href="/">Jinwoo Lee</a></h1>
+            <h1 className="text-4xl font-bold tracking-tight text-slate-200 sm:text-5xl flex space-x-4 items-center">
+              <Image src="/profile.jpg" className="rounded-full" width={120} height={50} alt="profile.jpg"/>
+              <a href="/">Jinwoo Lee</a>
+              </h1>
               <h2 className="mt-3 text-lg font-medium tracking-tight sm:text-xl text-slate-200">Full Stack Engineer</h2>
               <p className="mt-4 max-w-xs leading-normal text-slate-400">I am an all-around generalist with a passion for creating exceptional digital experience. </p>
             </div>
@@ -56,8 +58,17 @@ export default function Home() {
               </h2>
           </div>
           <div>
+              {/* <div className="mb-4 relative inline-block neon-button dark:hover:delay-700 dark:duration-300 transition ease-in-out duration-300 dark:bg-dark-primary-600 hover:bg-blue dark:hover:bg-darkBlue dark:hover:shadow-darkBlue dark:hover:shadow-[0_0_25px_0_rgba(1,176,209,0.4)] border-black hover:border-none hover:text-white dark:hover:border-none border dark:border-none">
+              <>
+                      <span className="absolute block top-0 left-[-100%] w-full h-[2px]" />
+                      <span className="absolute block top-[-100%] right-0 w-[2px] h-full" />
+                      <span className="absolute block bottom-0 right-[-100%] w-full h-[2px]" />
+                      <span className="absolute block bottom-[-100%] left-0 w-[2px] h-full" />
+                    </>
+              hello
+              </div> */}
               <ol className="group/list">
-                <li className="mb-12">
+                <li className="mb-12 relative neon-box p-4 rounded">
                     <div className="group relative grid pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50">
                       <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-[radial-gradient(farthest-corner_at_170px_40px,#26c8eb42,transparent_450px),radial-gradient(farthest-corner_at_80%_80%,#26c8eb42,transparent_450px)] lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg"></div>
                       <div className="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:col-span-2">
@@ -106,8 +117,14 @@ export default function Home() {
                           </ul>
                       </div>
                     </div>
+                    <>
+                      <span className="absolute block top-0 left-[-100%] w-full h-[2px] neon-line-1" />
+                      <span className="absolute block top-[-100%] right-0 w-[2px] h-full neon-line-2" />
+                      <span className="absolute block bottom-0 right-[-100%] w-full h-[2px] neon-line-3" />
+                      <span className="absolute block bottom-[-100%] left-0 w-[2px] h-full neon-line-4" />
+                    </>
                 </li>
-                <li className="mb-12">
+                <li className="mb-12 relative neon-box p-4 rounded">
                     <div className="group relative grid pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50">
                       <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-[radial-gradient(farthest-corner_at_170px_40px,#26c8eb42,transparent_450px),radial-gradient(farthest-corner_at_80%_80%,#26c8eb42,transparent_450px)] lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg"></div>
                       <header className="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:col-span-2" aria-label="2024 to Present">01. 2023 — 07. 2023</header>
@@ -144,8 +161,14 @@ export default function Home() {
                           </ul>
                       </div>
                     </div>
+                    <>
+                      <span className="absolute block top-0 left-[-100%] w-full h-[2px] neon-line-1" />
+                      <span className="absolute block top-[-100%] right-0 w-[2px] h-full neon-line-2" />
+                      <span className="absolute block bottom-0 right-[-100%] w-full h-[2px] neon-line-3" />
+                      <span className="absolute block bottom-[-100%] left-0 w-[2px] h-full neon-line-4" />
+                    </>
                 </li>
-                <li className="mb-12">
+                <li className="mb-12 relative neon-box p-4 rounded">
                     <div className="group relative grid pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50">
                       <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-[radial-gradient(farthest-corner_at_170px_40px,#26c8eb42,transparent_450px),radial-gradient(farthest-corner_at_80%_80%,#26c8eb42,transparent_450px)] lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg"></div>
                       <header className="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:col-span-2" aria-label="2024 to Present">11. 2021 — 12. 2022</header>
@@ -191,8 +214,14 @@ export default function Home() {
                           </ul>
                       </div>
                     </div>
+                    <>
+                      <span className="absolute block top-0 left-[-100%] w-full h-[2px] neon-line-1" />
+                      <span className="absolute block top-[-100%] right-0 w-[2px] h-full neon-line-2" />
+                      <span className="absolute block bottom-0 right-[-100%] w-full h-[2px] neon-line-3" />
+                      <span className="absolute block bottom-[-100%] left-0 w-[2px] h-full neon-line-4" />
+                    </>
                 </li>
-                <li className="mb-12">
+                <li className="mb-12 relative neon-box p-4 rounded">
                     <div className="group relative grid pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50"
                     
                     >
@@ -236,8 +265,14 @@ export default function Home() {
                           </ul>
                       </div>
                     </div>
+                    <>
+                      <span className="absolute block top-0 left-[-100%] w-full h-[2px] neon-line-1" />
+                      <span className="absolute block top-[-100%] right-0 w-[2px] h-full neon-line-2" />
+                      <span className="absolute block bottom-0 right-[-100%] w-full h-[2px] neon-line-3" />
+                      <span className="absolute block bottom-[-100%] left-0 w-[2px] h-full neon-line-4" />
+                    </>
                 </li>
-                <li className="mb-12">
+                <li className="mb-12 relative neon-box p-4 rounded">
                     <div className="group relative grid pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50">
                       <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-[radial-gradient(farthest-corner_at_170px_40px,#26c8eb42,transparent_450px),radial-gradient(farthest-corner_at_80%_80%,#26c8eb42,transparent_450px)] lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg"></div>
                       <header className="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:col-span-2" aria-label="2024 to Present">10. 2019 — 03. 2020</header>
@@ -274,6 +309,12 @@ export default function Home() {
                           </ul>
                       </div>
                     </div>
+                    <>
+                      <span className="absolute block top-0 left-[-100%] w-full h-[2px] neon-line-1" />
+                      <span className="absolute block top-[-100%] right-0 w-[2px] h-full neon-line-2" />
+                      <span className="absolute block bottom-0 right-[-100%] w-full h-[2px] neon-line-3" />
+                      <span className="absolute block bottom-[-100%] left-0 w-[2px] h-full neon-line-4" />
+                    </>
                 </li>
               </ol>
               <div className="mt-12">

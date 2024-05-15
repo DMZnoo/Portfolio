@@ -23,3 +23,58 @@ body {
 html[data-theme='dark'] {
   color-scheme: dark;
 }
+
+:root {
+  --blue: #01b0d1;
+  --darkBlue: #01718f;
+  --green: #22d49f;
+  --cyan: #01b0d1;
+  --ebony: #0d0d1d;
+  --martinique: #2a2a54;
+  --spaceCadet: #1b1b40;
+  --theme: light;
+  --yellow: #d0d422;
+}
+
+.neon-box {
+  overflow: hidden;
+}
+
+.neon-box .neon-line-1 {
+  background: linear-gradient(90deg, transparent, var(--blue));
+}
+
+.neon-box .neon-line-2 {
+  background: linear-gradient(180deg, transparent, var(--blue));
+}
+
+.neon-box .neon-line-3 {
+  background: linear-gradient(270deg, transparent, var(--blue));
+}
+
+.neon-box .neon-line-4 {
+  background: linear-gradient(360deg, transparent, var(--blue));
+}
+
+.neon-box:hover .neon-line-1 {
+  left: 100%;
+  transition: 1s;
+}
+
+.neon-box:hover .neon-line-2 {
+  top: 100%;
+  transition: 1s;
+  transition-delay: 0.25s;
+}
+
+.neon-box:hover .neon-line-3 {
+  right: 100%;
+  transition: 1s;
+  transition-delay: 0.5s;
+}
+
+.neon-box:hover .neon-line-4 {
+  bottom: 100%;
+  transition: 1s;
+  transition-delay: 0.75s;
+}
