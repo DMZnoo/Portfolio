@@ -2,7 +2,7 @@ import { AnimatedGrid } from "@/components/AnimatedGrid";
 import { ExperienceCard } from "@/components/ExperienceCard";
 import { ProfileHeader } from "@/components/ProfileHeader";
 import { Reveal } from "@/components/Reveal";
-import { CurrentlyWorking, SectionHeading } from "@/components/SectionPieces";
+import { PersonalProjects, SectionHeading } from "@/components/SectionPieces";
 import { experiences, profile } from "@/data/portfolio";
 
 export default function Home() {
@@ -54,47 +54,14 @@ export default function Home() {
                   </Reveal>
                 ))}
               </ol>
-
-              <div style={{ marginTop: 36 }}>
-                <a
-                  href={profile.links.resume}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="cv-link"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "baseline",
-                    color: "#e2e8f0",
-                    fontSize: 15,
-                    fontWeight: 600,
-                    textDecoration: "none",
-                    transition: "color 200ms",
-                  }}
-                >
-                  View Full Résumé
-                  <svg
-                    viewBox="0 0 20 20"
-                    width="13"
-                    height="13"
-                    fill="currentColor"
-                    aria-hidden
-                    style={{ marginLeft: 4, verticalAlign: -1 }}
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
-                    />
-                  </svg>
-                </a>
-              </div>
             </section>
 
             <section id="now" className="mb-32 scroll-mt-16">
               <Reveal>
-                <SectionHeading num="03" label="Currently" />
+                <SectionHeading num="03" label="Personal Projects" />
               </Reveal>
               <Reveal>
-                <CurrentlyWorking />
+                <PersonalProjects />
               </Reveal>
             </section>
           </main>

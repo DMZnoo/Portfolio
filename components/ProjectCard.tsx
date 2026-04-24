@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Project } from "@/data/portfolio";
 import { TechPill } from "./TechPill";
 
@@ -49,6 +49,8 @@ export function ProjectCard({
   const cardStyle: React.CSSProperties = {
     position: "relative",
     display: "block",
+    overflow: "hidden",
+    isolation: "isolate",
     borderRadius: 10,
     padding,
     background: hovered
@@ -285,16 +287,14 @@ function LivePreview({
     <div
       style={{
         position: "absolute",
-        right: 8,
-        top: 8,
-        width: 104,
-        height: 70,
+        inset: 0,
+        zIndex: 4,
+        borderRadius: 10,
+        overflow: "hidden",
         opacity: active ? 1 : 0,
-        transform: active
-          ? "translate(0,0) scale(1)"
-          : "translate(6px,-6px) scale(0.9)",
+        transform: active ? "scale(1)" : "scale(1.02)",
         transition: "opacity 300ms, transform 300ms cubic-bezier(.22,.61,.36,1)",
-        pointerEvents: "none",
+        pointerEvents: active ? "auto" : "none",
       }}
     >
       <PreviewStack
@@ -324,62 +324,126 @@ function PreviewStack({
   }));
   const sourceImages = project.images?.length ? project.images : fallbackImages;
   const offset = sourceImages.length ? previewSeed % sourceImages.length : 0;
-  const images = [...sourceImages.slice(offset), ...sourceImages.slice(0, offset)].slice(0, 3);
+  const initialImages = [...sourceImages.slice(offset), ...sourceImages.slice(0, offset)].slice(0, 3);
+  const getImageKey = (image: { src: string; alt: string }) => image.src || image.alt;
+  const [spotlightKey, setSpotlightKey] = useState(
+    initialImages[0] ? getImageKey(initialImages[0]) : "fallback-0"
+  );
+
+  useEffect(() => {
+    setSpotlightKey(initialImages[0] ? getImageKey(initialImages[0]) : "fallback-0");
+  }, [initialImages[0]?.src, initialImages[0]?.alt]);
+
+  const spotlightImage =
+    initialImages.find((image) => getImageKey(image) === spotlightKey) || initialImages[0];
+  const thumbnailImages = initialImages;
+  const hasSpotlightImage = Boolean(spotlightImage?.src);
 
   return (
-    <>
-      {images.map((image, i) => {
-        const hasImage = Boolean(image.src);
-        const x = i * 9;
-        const y = i * 7;
-        return (
-          <div
-            key={`${image.src || project.id}-${i}`}
-            style={{
-              position: "absolute",
-              left: x,
-              top: y,
-              width: 84,
-              height: 52,
-              borderRadius: 6,
-              overflow: "hidden",
-              border: `1px solid ${accent}${i === 0 ? "aa" : "66"}`,
-              background: hasImage
-                ? "#0b1220"
-                : `linear-gradient(145deg, ${accent}${(18 + i * 10)
-                    .toString(16)
-                    .padStart(2, "0")}, rgba(15,23,42,0.95))`,
-              boxShadow: `0 ${8 + i * 4}px ${20 + i * 6}px -12px ${accent}88`,
-              transform: active
-                ? `translate(0, 0) rotate(${(i - 1) * 3}deg)`
-                : `translate(${6 - i * 2}px, ${-7 - i * 2}px) rotate(0deg)`,
-              transition: `transform 420ms ${i * 70}ms cubic-bezier(.22,.61,.36,1)`,
-              zIndex: images.length - i,
-            }}
-          >
-            {hasImage ? (
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                sizes="112px"
-                style={{ objectFit: "cover" }}
-              />
-            ) : (
-              <svg width="100%" height="100%" viewBox="0 0 84 52" preserveAspectRatio="none">
-                <path
-                  d="M8 35 C19 19 28 40 39 26 C50 12 60 23 76 10"
-                  fill="none"
-                  stroke={accent}
-                  strokeOpacity="0.7"
-                  strokeWidth="2"
-                />
-                <circle cx="18" cy="18" r="5" fill={accent} fillOpacity="0.45" />
-              </svg>
-            )}
-          </div>
-        );
-      })}
-    </>
+    <div style={{ position: "absolute", inset: 0, background: "#0b1220" }}>
+      {hasSpotlightImage ? (
+        <Image
+          src={spotlightImage.src}
+          alt={spotlightImage.alt}
+          fill
+          sizes="360px"
+          style={{
+            objectFit: "contain",
+            transform: active ? "scale(1.08)" : "scale(1)",
+            transition: "transform 650ms cubic-bezier(.22,.61,.36,1)",
+          }}
+        />
+      ) : (
+        <svg width="100%" height="100%" viewBox="0 0 360 220" preserveAspectRatio="none">
+          <rect width="360" height="220" fill="#0b1220" />
+          <path
+            d="M24 150 C72 68 124 176 174 112 C228 44 276 88 336 38"
+            fill="none"
+            stroke={accent}
+            strokeOpacity="0.72"
+            strokeWidth="8"
+          />
+          <circle cx="84" cy="74" r="22" fill={accent} fillOpacity="0.28" />
+        </svg>
+      )}
+
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(180deg, rgba(2,6,23,0.08), rgba(2,6,23,0.22) 45%, rgba(2,6,23,0.78))",
+        }}
+      />
+
+      {thumbnailImages.length > 0 ? (
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            bottom: 12,
+            display: "flex",
+            gap: 8,
+            transform: "translateX(-50%)",
+            zIndex: 2,
+          }}
+        >
+          {thumbnailImages.map((image, i) => {
+            const hasImage = Boolean(image.src);
+            const imageKey = getImageKey(image);
+            const isSelected = imageKey === spotlightKey;
+            return (
+              <div
+                key={`${imageKey}-${i}`}
+                onMouseEnter={(event) => {
+                  event.preventDefault();
+                  setSpotlightKey(imageKey);
+                }}
+                onClick={(event) => {
+                  event.preventDefault();
+                  setSpotlightKey(imageKey);
+                }}
+                style={{
+                  position: "relative",
+                  width: 48,
+                  height: 32,
+                  borderRadius: 5,
+                  overflow: "hidden",
+                  border: `1px solid ${isSelected ? "#e2fcff" : `${accent}aa`}`,
+                  background: "rgba(2,6,23,0.92)",
+                  boxShadow: isSelected
+                    ? `0 0 0 1px ${accent}77, 0 8px 24px -8px ${accent}`
+                    : `0 8px 22px -10px ${accent}cc`,
+                  cursor: "pointer",
+                  transform: isSelected ? "translateY(-2px)" : "translateY(0)",
+                  transition: "transform 180ms ease, border-color 180ms ease",
+                  opacity: isSelected ? 1 : 0.82,
+                }}
+              >
+                {hasImage ? (
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    sizes="64px"
+                    style={{ objectFit: "contain" }}
+                  />
+                ) : (
+                  <svg width="100%" height="100%" viewBox="0 0 48 32" preserveAspectRatio="none">
+                    <path
+                      d="M5 22 C13 11 20 24 27 16 C34 8 39 12 44 7"
+                      fill="none"
+                      stroke={accent}
+                      strokeOpacity="0.8"
+                      strokeWidth="2"
+                    />
+                  </svg>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
   );
 }

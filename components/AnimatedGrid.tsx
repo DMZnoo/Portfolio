@@ -35,6 +35,7 @@ export function AnimatedGrid() {
       length: number;
       seed: number;
       maxRow: number;
+      intensity: number;
     }[] = [];
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -59,13 +60,20 @@ export function AnimatedGrid() {
       const column = Math.max(0, Math.min(columns - 1, Math.floor(mouse.targetX / cellSize)));
       if (!force && now - lastSpawn < 86) return;
 
-      streams.push({
-        column,
-        head: -Math.random() * 3,
-        speed: 0.34 + Math.random() * 0.18,
-        length: 10 + Math.floor(Math.random() * 8),
-        seed: Math.random() * 1000,
-        maxRow: Math.max(4, Math.ceil(mouse.targetY / cellSize) + 3),
+      [-1, 0, 1].forEach((columnOffset) => {
+        const streamColumn = column + columnOffset;
+        if (streamColumn < 0 || streamColumn >= columns) return;
+
+        const isCenter = columnOffset === 0;
+        streams.push({
+          column: streamColumn,
+          head: -Math.random() * (isCenter ? 2.2 : 4.2),
+          speed: (isCenter ? 0.38 : 0.3) + Math.random() * 0.16,
+          length: (isCenter ? 12 : 8) + Math.floor(Math.random() * 7),
+          seed: Math.random() * 1000 + columnOffset * 97,
+          maxRow: Math.max(4, Math.ceil(mouse.targetY / cellSize) + (isCenter ? 4 : 2)),
+          intensity: isCenter ? 1 : 0.48,
+        });
       });
       lastSpawn = now;
     }
@@ -143,12 +151,12 @@ export function AnimatedGrid() {
             characters.length;
           const sequence = Math.max(0, 1 - Math.abs(stream.head - row) / 1.7);
           const tail = Math.max(0, 1 - offset / stream.length);
-          const alpha = 0.06 + sequence * 0.42 + tail * 0.16;
+          const alpha = (0.05 + sequence * 0.44 + tail * 0.16) * stream.intensity;
 
           ctx.fillStyle =
             offset === 0
-              ? `rgba(226, 252, 255, ${Math.min(0.74, alpha + 0.12)})`
-              : `rgba(38, 200, 235, ${Math.min(0.58, alpha)})`;
+              ? `rgba(226, 252, 255, ${Math.min(0.78, alpha + 0.1 * stream.intensity)})`
+              : `rgba(38, 200, 235, ${Math.min(0.6, alpha)})`;
           ctx.fillText(characters[charIndex], x, y);
         }
 
@@ -157,8 +165,8 @@ export function AnimatedGrid() {
         }
       }
 
-      if (streams.length > 70) {
-        streams.splice(0, streams.length - 70);
+      if (streams.length > 120) {
+        streams.splice(0, streams.length - 120);
       }
 
       if (!reduceMotion) {

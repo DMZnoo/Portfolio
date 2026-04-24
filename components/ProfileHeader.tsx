@@ -33,7 +33,7 @@ function InstagramIcon() {
 const navItems = [
   { id: "about", label: "About" },
   { id: "experience", label: "Experience & Projects" },
-  { id: "now", label: "Currently" },
+  { id: "now", label: "Personal Projects" },
 ];
 
 export function ProfileHeader() {
@@ -172,44 +172,84 @@ export function ProfileHeader() {
         </nav>
       </div>
 
-      <ul
-        className="mt-10 lg:mt-0"
-        style={{
-          listStyle: "none",
-          padding: 0,
-          display: "flex",
-          gap: 18,
-          alignItems: "center",
-        }}
-      >
-        {[
-          { key: "GitHub", href: profile.links.github, icon: <GitHubIcon /> },
-          { key: "LinkedIn", href: profile.links.linkedin, icon: <LinkedInIcon /> },
-          { key: "Instagram", href: profile.links.instagram, icon: <InstagramIcon /> },
-        ].map((s) => (
-          <li key={s.key}>
-            <a
-              href={s.href}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label={s.key}
-              className="social-link"
-              style={{
-                color: "#64748b",
-                display: "inline-flex",
-                transition: "color 200ms, transform 200ms",
-              }}
+      <div className="mt-10 lg:mt-0">
+        <ul
+          style={{
+            listStyle: "none",
+            padding: 0,
+            margin: 0,
+            display: "flex",
+            gap: 18,
+            alignItems: "center",
+          }}
+        >
+          {[
+            { key: "GitHub", href: profile.links.github, icon: <GitHubIcon /> },
+            { key: "LinkedIn", href: profile.links.linkedin, icon: <LinkedInIcon /> },
+            { key: "Instagram", href: profile.links.instagram, icon: <InstagramIcon /> },
+          ].map((s) => (
+            <li key={s.key}>
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label={s.key}
+                className="social-link"
+                style={{
+                  color: "#64748b",
+                  display: "inline-flex",
+                  transition: "color 200ms, transform 200ms",
+                }}
+              >
+                {s.icon}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div style={{ marginTop: 16 }}>
+          <a
+            href={profile.links.resume}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="resume-link"
+            style={{
+              display: "inline-flex",
+              alignItems: "baseline",
+              color: "#94a3b8",
+              fontSize: 13,
+              fontWeight: 700,
+              letterSpacing: 1.4,
+              textTransform: "uppercase",
+              textDecoration: "none",
+              transition: "color 200ms, transform 200ms",
+            }}
+          >
+            View Full Résumé
+            <svg
+              viewBox="0 0 20 20"
+              width="12"
+              height="12"
+              fill="currentColor"
+              aria-hidden
+              style={{ marginLeft: 5, verticalAlign: -1 }}
             >
-              {s.icon}
-            </a>
-          </li>
-        ))}
-      </ul>
+              <path
+                fillRule="evenodd"
+                d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
 
       <style jsx>{`
         .social-link:hover {
           color: #e2e8f0 !important;
           transform: translateY(-2px);
+        }
+        .resume-link:hover {
+          color: #e2e8f0 !important;
+          transform: translateY(-1px);
         }
       `}</style>
     </header>

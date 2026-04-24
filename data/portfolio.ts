@@ -42,8 +42,7 @@ export const profile = {
   ],
   nowWorking: {
     label: "Currently building",
-    tag: "McCann NZ · Live",
-    text: "Fantasy Herd — a fantasy-football themed game for Meadow Fresh with league flows, mobile scan features, and prize campaign tooling.",
+    text: "A modernized workout tracking iOS App for weight lifters with auto rep tracking using Core Motion on Apple Watch andinteractive 3D experiences with RealityKit.",
   },
   links: {
     github: "https://github.com/DMZnoo",
