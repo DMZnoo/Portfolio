@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  color-scheme: dark;
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  background: #020617;
+  color: #cbd5e1;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection { background: rgba(38, 200, 235, 0.3); color: #f1f5f9; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.15); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.3); }
+
+/* Reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 700ms cubic-bezier(.22,.61,.36,1), transform 700ms cubic-bezier(.22,.61,.36,1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ping */
+@keyframes ping {
+  75%, 100% { transform: scale(2.4); opacity: 0; }
+}
+.animate-ping-slow {
+  animation: ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Bar */
+@keyframes bar {
+  0% { transform: scaleY(0.6); }
+  100% { transform: scaleY(1); }
+}
+
+/* Nav link underline */
+.navlink .navline {
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: #475569;
+  transition: all 280ms cubic-bezier(.22,.61,.36,1);
+}
+.navlink.is-active .navline,
+.navlink:hover .navline {
+  width: 48px;
+  background: #f1f5f9;
+}
+.navlink.is-active,
+.navlink:hover {
+  color: #f1f5f9;
+}
