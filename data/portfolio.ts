@@ -43,6 +43,7 @@ export const profile = {
   nowWorking: {
     label: "Currently building",
     text: "A modernized workout tracking iOS App for weight lifters with auto rep tracking using Core Motion on Apple Watch andinteractive 3D experiences with RealityKit.",
+    tag: undefined as string | undefined,
   },
   links: {
     github: "https://github.com/DMZnoo",
