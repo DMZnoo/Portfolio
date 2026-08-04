@@ -6,6 +6,7 @@ import type { ExerciseReference } from "@/lib/exerciseReference";
 export type ReviewItem = {
   id: string;
   page: string;
+  round: number;
   slug: string;
   name: string;
   verdict: "pending" | "pass" | "fail";
@@ -472,11 +473,22 @@ export default function ReviewBoard({ items }: { items: ReviewItem[] }) {
   // Partition on the verdict as loaded from the server: cards keep their
   // section for the whole visit even if the verdict changes, so approving a
   // card doesn't yank it out from under the cursor. Reload to re-partition.
+  // Each page carries its own round now, so the round belongs in the section
+  // heading rather than in one page-wide title.
   const grouped = useMemo(() => {
-    const map = new Map<string, { active: ReviewItem[]; approved: ReviewItem[] }>();
+    const map = new Map<
+      string,
+      { round: number; active: ReviewItem[]; approved: ReviewItem[] }
+    >();
     for (const item of items) {
-      if (!map.has(item.page)) map.set(item.page, { active: [], approved: [] });
+      if (!map.has(item.page)) {
+        map.set(item.page, { round: item.round, active: [], approved: [] });
+      }
       const bucket = map.get(item.page)!;
+      // Rows are the latest per exercise, so a page can straddle rounds while
+      // one wave is re-rendered and the rest sit still. Label it with the
+      // newest round present.
+      bucket.round = Math.max(bucket.round, item.round);
       (item.verdict === "pass" ? bucket.approved : bucket.active).push(item);
     }
     return Array.from(map.entries()).sort(([a], [b]) => a.localeCompare(b));
@@ -484,10 +496,10 @@ export default function ReviewBoard({ items }: { items: ReviewItem[] }) {
 
   return (
     <div className="space-y-10">
-      {grouped.map(([page, { active, approved }]) => (
+      {grouped.map(([page, { round, active, approved }]) => (
         <section key={page}>
           <h2 className="mb-3 text-sm uppercase tracking-wide text-white/60">
-            {page} ({active.length} to review, {approved.length} approved)
+            {page} — round {round} ({active.length} to review, {approved.length} approved)
           </h2>
           {active.length > 0 ? (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

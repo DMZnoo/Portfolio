@@ -4,33 +4,15 @@ import { findExerciseReference } from "@/lib/exerciseReference";
 
 export const dynamic = "force-dynamic";
 
-async function getLatestRound() {
-  const { data } = await supabasePublic()
-    .from("exercise_demo_reviews")
-    .select("round")
-    .order("round", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  return data?.round ?? null;
-}
-
 export default async function ReviewPage() {
-  const round = await getLatestRound();
-
-  if (round === null) {
-    return (
-      <main className="min-h-screen bg-black p-8 font-mono text-white">
-        No review data synced yet.
-      </main>
-    );
-  }
-
+  // The view already narrows to each page's own latest round, so independent
+  // work streams (a fix round on existing demos vs. a new build-out wave) no
+  // longer hide each other behind one global max(round).
   const { data, error } = await supabasePublic()
-    .from("exercise_demo_reviews")
+    .from("exercise_demo_reviews_latest")
     .select(
-      "id, page, exercise_slug, exercise_name, video_path_side, video_path_orbit, verdict, comment, feedback_image_path"
+      "id, page, exercise_slug, exercise_name, video_path_side, video_path_orbit, verdict, comment, feedback_image_path, round"
     )
-    .eq("round", round)
     .order("page")
     .order("exercise_name");
 
@@ -46,9 +28,18 @@ export default async function ReviewPage() {
   const publicUrl = (path: string) =>
     `${supabaseUrl}/storage/v1/object/public/${PREVIEW_BUCKET}/${path}`;
 
+  if (data.length === 0) {
+    return (
+      <main className="min-h-screen bg-black p-8 font-mono text-white">
+        No review data synced yet.
+      </main>
+    );
+  }
+
   const items: ReviewItem[] = data.map((row) => ({
     id: row.id,
     page: row.page,
+    round: row.round,
     slug: row.exercise_slug,
     name: row.exercise_name,
     verdict: row.verdict as "pending" | "pass" | "fail",
@@ -64,7 +55,7 @@ export default async function ReviewPage() {
   return (
     <main className="min-h-screen bg-black px-6 py-10 font-mono text-white">
       <div className="mx-auto max-w-6xl">
-        <h1 className="mb-1 text-xl">Exercise Demo Review — Round {round}</h1>
+        <h1 className="mb-1 text-xl">Exercise Demo Review</h1>
         <p className="mb-8 text-sm text-white/50">
           {items.length} exercises. Verdicts save automatically.
           {withoutReference > 0 && ` ${withoutReference} without a matched reference.`}
