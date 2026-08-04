@@ -270,27 +270,47 @@ function Card({ item }: { item: ReviewItem }) {
 }
 
 export default function ReviewBoard({ items }: { items: ReviewItem[] }) {
+  // Partition on the verdict as loaded from the server: cards keep their
+  // section for the whole visit even if the verdict changes, so approving a
+  // card doesn't yank it out from under the cursor. Reload to re-partition.
   const grouped = useMemo(() => {
-    const map = new Map<string, ReviewItem[]>();
+    const map = new Map<string, { active: ReviewItem[]; approved: ReviewItem[] }>();
     for (const item of items) {
-      if (!map.has(item.page)) map.set(item.page, []);
-      map.get(item.page)!.push(item);
+      if (!map.has(item.page)) map.set(item.page, { active: [], approved: [] });
+      const bucket = map.get(item.page)!;
+      (item.verdict === "pass" ? bucket.approved : bucket.active).push(item);
     }
     return Array.from(map.entries()).sort(([a], [b]) => a.localeCompare(b));
   }, [items]);
 
   return (
     <div className="space-y-10">
-      {grouped.map(([page, pageItems]) => (
+      {grouped.map(([page, { active, approved }]) => (
         <section key={page}>
           <h2 className="mb-3 text-sm uppercase tracking-wide text-white/60">
-            {page} ({pageItems.length})
+            {page} ({active.length} to review, {approved.length} approved)
           </h2>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {pageItems.map((item) => (
-              <Card key={item.id} item={item} />
-            ))}
-          </div>
+          {active.length > 0 ? (
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {active.map((item) => (
+                <Card key={item.id} item={item} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-white/30">Nothing left to review here.</p>
+          )}
+          {approved.length > 0 && (
+            <details className="mt-3">
+              <summary className="cursor-pointer select-none text-xs uppercase tracking-wide text-emerald-400/70 hover:text-emerald-300">
+                Approved ({approved.length})
+              </summary>
+              <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {approved.map((item) => (
+                  <Card key={item.id} item={item} />
+                ))}
+              </div>
+            </details>
+          )}
         </section>
       ))}
     </div>
