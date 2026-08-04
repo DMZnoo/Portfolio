@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import type { ExerciseReference } from "@/lib/exerciseReference";
 
 export type ReviewItem = {
   id: string;
@@ -12,6 +13,7 @@ export type ReviewItem = {
   videoUrlSide: string | null;
   videoUrlOrbit: string | null;
   feedbackImageUrl: string | null;
+  reference: ExerciseReference | null;
 };
 
 // Mounts the <video> element only while the card is near the viewport, so
@@ -45,6 +47,155 @@ function LazyVideo({ src }: { src: string }) {
         />
       )}
     </div>
+  );
+}
+
+// Locks the page behind a modal. Padding compensates for the scrollbar the
+// lock removes, so the board underneath doesn't jump sideways as it opens.
+function useScrollLock(active: boolean) {
+  useLayoutEffect(() => {
+    if (!active) return;
+    const { body } = document;
+    const previousOverflow = body.style.overflow;
+    const previousPadding = body.style.paddingRight;
+    const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+
+    body.style.overflow = "hidden";
+    if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`;
+
+    return () => {
+      body.style.overflow = previousOverflow;
+      body.style.paddingRight = previousPadding;
+    };
+  }, [active]);
+}
+
+type Slide = { key: string; label: string; render: () => React.ReactNode };
+
+function Carousel({ title, slides }: { title: string; slides: Slide[] }) {
+  const [index, setIndex] = useState(0);
+  const count = slides.length;
+
+  const step = useCallback(
+    (delta: number) => setIndex((current) => (current + delta + count) % count),
+    [count]
+  );
+
+  if (count === 0) {
+    return (
+      <div>
+        <p className="mb-1 text-xs uppercase tracking-wide text-white/50">{title}</p>
+        <div className="flex aspect-video w-full items-center justify-center rounded bg-white/[0.03] text-xs text-white/30">
+          none available
+        </div>
+      </div>
+    );
+  }
+
+  const active = slides[Math.min(index, count - 1)];
+
+  return (
+    <div>
+      <div className="mb-1 flex items-center justify-between gap-2">
+        <p className="text-xs uppercase tracking-wide text-white/50">
+          {title} — {active.label}
+        </p>
+        {count > 1 && (
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              aria-label={`Previous ${title.toLowerCase()}`}
+              onClick={() => step(-1)}
+              className="rounded bg-white/10 px-2 py-0.5 text-xs text-white/70 hover:bg-white/20 hover:text-white"
+            >
+              ‹
+            </button>
+            <span className="text-[10px] tabular-nums text-white/40">
+              {index + 1}/{count}
+            </span>
+            <button
+              type="button"
+              aria-label={`Next ${title.toLowerCase()}`}
+              onClick={() => step(1)}
+              className="rounded bg-white/10 px-2 py-0.5 text-xs text-white/70 hover:bg-white/20 hover:text-white"
+            >
+              ›
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Every slide stays mounted so videos keep their playback position and
+          reference photos don't re-fetch when you flick back and forth. */}
+      <div className="relative aspect-video w-full overflow-hidden rounded bg-black">
+        {slides.map((slide, slideIndex) => (
+          <div
+            key={slide.key}
+            className={`absolute inset-0 ${slideIndex === index ? "" : "invisible"}`}
+          >
+            {slide.render()}
+          </div>
+        ))}
+      </div>
+
+      {count > 1 && (
+        <div className="mt-2 flex justify-center gap-1.5">
+          {slides.map((slide, slideIndex) => (
+            <button
+              key={slide.key}
+              type="button"
+              aria-label={`Show ${slide.label}`}
+              onClick={() => setIndex(slideIndex)}
+              className={`h-1.5 w-1.5 rounded-full transition ${
+                slideIndex === index ? "bg-cyan-400" : "bg-white/20 hover:bg-white/40"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Grows with its content instead of scrolling inside two fixed rows — fail
+// comments routinely run several sentences.
+function AutoGrowTextarea({
+  value,
+  onChange,
+  onBlur,
+  placeholder,
+  className,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  onBlur: () => void;
+  placeholder: string;
+  className: string;
+}) {
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  const resize = useCallback(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.style.height = "auto";
+    // A textarea inside a collapsed <details> — the approved-cards section —
+    // measures 0. Leave it alone and re-measure once it is actually shown.
+    if (el.scrollHeight > 0) el.style.height = `${el.scrollHeight}px`;
+  }, []);
+
+  useLayoutEffect(resize, [resize, value]);
+
+  return (
+    <textarea
+      ref={ref}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      onBlur={onBlur}
+      onFocus={resize}
+      placeholder={placeholder}
+      rows={2}
+      className={className}
+    />
   );
 }
 
@@ -132,13 +283,12 @@ function FeedbackControls({ feedback }: { feedback: FeedbackState }) {
           Fail
         </button>
       </div>
-      <textarea
+      <AutoGrowTextarea
         value={feedback.comment}
-        onChange={(e) => feedback.setComment(e.target.value)}
+        onChange={feedback.setComment}
         onBlur={feedback.saveComment}
         placeholder="Fail comment..."
-        rows={2}
-        className="w-full resize-none rounded border border-white/10 bg-black/50 px-2 py-1 text-xs text-white outline-none focus:border-cyan-400"
+        className="block max-h-64 w-full resize-none overflow-y-auto rounded border border-white/10 bg-black/50 px-2 py-1 text-xs leading-relaxed text-white outline-none focus:border-cyan-400"
       />
       <div className="mt-2">
         <input
@@ -182,6 +332,8 @@ function ViewDialog({
   feedback: FeedbackState;
   onClose: () => void;
 }) {
+  useScrollLock(true);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -190,18 +342,47 @@ function ViewDialog({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const views = [
+  const renderSlides: Slide[] = [
     { label: "Side", url: item.videoUrlSide },
     { label: "Orbit", url: item.videoUrlOrbit },
-  ].filter((v) => v.url);
+  ]
+    .filter((view): view is { label: string; url: string } => Boolean(view.url))
+    .map((view) => ({
+      key: view.label,
+      label: view.label,
+      render: () => (
+        <video
+          src={view.url}
+          controls
+          loop
+          muted
+          autoPlay
+          playsInline
+          className="h-full w-full bg-black object-contain"
+        />
+      ),
+    }));
+
+  const referenceSlides: Slide[] = (item.reference?.images ?? []).map((url, imageIndex) => ({
+    key: url,
+    label: `Photo ${imageIndex + 1}`,
+    render: () => (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={url}
+        alt={`${item.reference?.name} reference ${imageIndex + 1}`}
+        className="h-full w-full bg-white object-contain"
+      />
+    ),
+  }));
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto overscroll-contain bg-black/80 p-4"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-5xl rounded-lg border border-white/10 bg-black p-4 sm:p-6"
+        className="my-auto w-full max-w-5xl rounded-lg border border-white/10 bg-black p-4 sm:p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
@@ -213,19 +394,37 @@ function ViewDialog({
             Close
           </button>
         </div>
+
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {views.map((v) => (
-            <div key={v.label}>
-              <p className="mb-1 text-xs uppercase tracking-wide text-white/50">{v.label}</p>
-              <video
-                src={v.url!}
-                controls
-                playsInline
-                className="aspect-video w-full rounded bg-black"
-              />
-            </div>
-          ))}
+          <Carousel title="Render" slides={renderSlides} />
+          <div>
+            <Carousel title="Reference" slides={referenceSlides} />
+            {item.reference ? (
+              <p className="mt-2 text-[10px] uppercase tracking-wide text-white/40">
+                free-exercise-db · {item.reference.name}
+                {item.reference.equipment ? ` · ${item.reference.equipment}` : ""}
+              </p>
+            ) : (
+              <p className="mt-2 text-[10px] uppercase tracking-wide text-white/40">
+                No reference matched for “{item.name}”
+              </p>
+            )}
+          </div>
         </div>
+
+        {item.reference && item.reference.instructions.length > 0 && (
+          <details className="mt-4">
+            <summary className="cursor-pointer select-none text-xs uppercase tracking-wide text-white/50 hover:text-white/80">
+              Reference instructions
+            </summary>
+            <ol className="mt-2 list-decimal space-y-1 pl-5 text-xs leading-relaxed text-white/60">
+              {item.reference.instructions.map((line, lineIndex) => (
+                <li key={lineIndex}>{line}</li>
+              ))}
+            </ol>
+          </details>
+        )}
+
         <div className="mt-4 max-w-sm">
           <FeedbackControls feedback={feedback} />
         </div>
@@ -255,7 +454,7 @@ function Card({ item }: { item: ReviewItem }) {
       >
         {item.videoUrlSide && <LazyVideo src={item.videoUrlSide} />}
         <span className="absolute inset-0 flex items-center justify-center rounded bg-black/0 text-xs text-transparent transition group-hover:bg-black/40 group-hover:text-white">
-          View all angles
+          Compare with reference
         </span>
       </button>
       <p className="mb-2 truncate text-sm text-white/90" title={item.name}>

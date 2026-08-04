@@ -1,5 +1,6 @@
 import { supabasePublic, PREVIEW_BUCKET } from "@/lib/supabase";
 import ReviewBoard, { ReviewItem } from "@/components/review/ReviewBoard";
+import { findExerciseReference } from "@/lib/exerciseReference";
 
 export const dynamic = "force-dynamic";
 
@@ -55,7 +56,10 @@ export default async function ReviewPage() {
     videoUrlSide: row.video_path_side ? publicUrl(row.video_path_side) : null,
     videoUrlOrbit: row.video_path_orbit ? publicUrl(row.video_path_orbit) : null,
     feedbackImageUrl: row.feedback_image_path ? publicUrl(row.feedback_image_path) : null,
+    reference: findExerciseReference(row.exercise_name, row.exercise_slug),
   }));
+
+  const withoutReference = items.filter((item) => !item.reference).length;
 
   return (
     <main className="min-h-screen bg-black px-6 py-10 font-mono text-white">
@@ -63,6 +67,7 @@ export default async function ReviewPage() {
         <h1 className="mb-1 text-xl">Exercise Demo Review — Round {round}</h1>
         <p className="mb-8 text-sm text-white/50">
           {items.length} exercises. Verdicts save automatically.
+          {withoutReference > 0 && ` ${withoutReference} without a matched reference.`}
         </p>
         <ReviewBoard items={items} />
       </div>
