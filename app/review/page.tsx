@@ -26,7 +26,9 @@ export default async function ReviewPage() {
 
   const { data, error } = await supabasePublic()
     .from("exercise_demo_reviews")
-    .select("id, page, exercise_slug, exercise_name, video_path_side, video_path_orbit, verdict, comment")
+    .select(
+      "id, page, exercise_slug, exercise_name, video_path_side, video_path_orbit, verdict, comment, feedback_image_path"
+    )
     .eq("round", round)
     .order("page")
     .order("exercise_name");
@@ -52,6 +54,7 @@ export default async function ReviewPage() {
     comment: row.comment,
     videoUrlSide: row.video_path_side ? publicUrl(row.video_path_side) : null,
     videoUrlOrbit: row.video_path_orbit ? publicUrl(row.video_path_orbit) : null,
+    feedbackImageUrl: row.feedback_image_path ? publicUrl(row.feedback_image_path) : null,
   }));
 
   return (

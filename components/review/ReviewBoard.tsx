@@ -11,6 +11,7 @@ export type ReviewItem = {
   comment: string | null;
   videoUrlSide: string | null;
   videoUrlOrbit: string | null;
+  feedbackImageUrl: string | null;
 };
 
 // Mounts the <video> element only while the card is near the viewport, so
@@ -47,7 +48,140 @@ function LazyVideo({ src }: { src: string }) {
   );
 }
 
-function ViewDialog({ item, onClose }: { item: ReviewItem; onClose: () => void }) {
+type FeedbackState = {
+  verdict: "pending" | "pass" | "fail";
+  comment: string;
+  imageUrl: string | null;
+  saving: boolean;
+  uploading: boolean;
+  setVerdictAndSave: (next: "pass" | "fail") => void;
+  setComment: (value: string) => void;
+  saveComment: () => void;
+  uploadImage: (file: File) => void;
+};
+
+function useFeedback(item: ReviewItem): FeedbackState {
+  const [verdict, setVerdict] = useState(item.verdict);
+  const [comment, setComment] = useState(item.comment ?? "");
+  const [imageUrl, setImageUrl] = useState(item.feedbackImageUrl);
+  const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  async function save(nextVerdict: typeof verdict, nextComment: string) {
+    setSaving(true);
+    await fetch("/api/review/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: item.id, verdict: nextVerdict, comment: nextComment }),
+    });
+    setSaving(false);
+  }
+
+  function setVerdictAndSave(next: "pass" | "fail") {
+    const resolved = verdict === next ? "pending" : next;
+    setVerdict(resolved);
+    save(resolved, comment);
+  }
+
+  async function uploadImage(file: File) {
+    setUploading(true);
+    const formData = new FormData();
+    formData.append("id", item.id);
+    formData.append("file", file);
+    const res = await fetch("/api/review/upload", { method: "POST", body: formData });
+    if (res.ok) {
+      const { publicUrl } = await res.json();
+      setImageUrl(publicUrl);
+    }
+    setUploading(false);
+  }
+
+  return {
+    verdict,
+    comment,
+    imageUrl,
+    saving,
+    uploading,
+    setVerdictAndSave,
+    setComment,
+    saveComment: () => save(verdict, comment),
+    uploadImage,
+  };
+}
+
+function FeedbackControls({ feedback }: { feedback: FeedbackState }) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <div>
+      <div className="mb-2 flex gap-2">
+        <button
+          onClick={() => feedback.setVerdictAndSave("pass")}
+          className={`flex-1 rounded px-2 py-1 text-xs ${
+            feedback.verdict === "pass" ? "bg-emerald-500 text-black" : "bg-white/10 text-white/70"
+          }`}
+        >
+          Pass
+        </button>
+        <button
+          onClick={() => feedback.setVerdictAndSave("fail")}
+          className={`flex-1 rounded px-2 py-1 text-xs ${
+            feedback.verdict === "fail" ? "bg-red-500 text-black" : "bg-white/10 text-white/70"
+          }`}
+        >
+          Fail
+        </button>
+      </div>
+      <textarea
+        value={feedback.comment}
+        onChange={(e) => feedback.setComment(e.target.value)}
+        onBlur={feedback.saveComment}
+        placeholder="Fail comment..."
+        rows={2}
+        className="w-full resize-none rounded border border-white/10 bg-black/50 px-2 py-1 text-xs text-white outline-none focus:border-cyan-400"
+      />
+      <div className="mt-2">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) feedback.uploadImage(file);
+            e.target.value = "";
+          }}
+        />
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          className="w-full rounded border border-dashed border-white/20 px-2 py-1 text-xs text-white/60 hover:border-cyan-400 hover:text-white"
+        >
+          {feedback.uploading ? "Uploading..." : feedback.imageUrl ? "Replace feedback image" : "Attach feedback image"}
+        </button>
+        {feedback.imageUrl && (
+          <img
+            src={feedback.imageUrl}
+            alt="Feedback attachment"
+            className="mt-2 max-h-40 w-full rounded object-contain"
+          />
+        )}
+      </div>
+      {(feedback.saving || feedback.uploading) && (
+        <p className="mt-1 text-[10px] text-white/30">saving...</p>
+      )}
+    </div>
+  );
+}
+
+function ViewDialog({
+  item,
+  feedback,
+  onClose,
+}: {
+  item: ReviewItem;
+  feedback: FeedbackState;
+  onClose: () => void;
+}) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -92,39 +226,24 @@ function ViewDialog({ item, onClose }: { item: ReviewItem; onClose: () => void }
             </div>
           ))}
         </div>
+        <div className="mt-4 max-w-sm">
+          <FeedbackControls feedback={feedback} />
+        </div>
       </div>
     </div>
   );
 }
 
 function Card({ item }: { item: ReviewItem }) {
-  const [verdict, setVerdict] = useState(item.verdict);
-  const [comment, setComment] = useState(item.comment ?? "");
-  const [saving, setSaving] = useState(false);
+  const feedback = useFeedback(item);
   const [dialogOpen, setDialogOpen] = useState(false);
-
-  async function save(nextVerdict: typeof verdict, nextComment: string) {
-    setSaving(true);
-    await fetch("/api/review/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: item.id, verdict: nextVerdict, comment: nextComment }),
-    });
-    setSaving(false);
-  }
-
-  function setVerdictAndSave(next: "pass" | "fail") {
-    const resolved = verdict === next ? "pending" : next;
-    setVerdict(resolved);
-    save(resolved, comment);
-  }
 
   return (
     <div
       className={`rounded-lg border p-3 transition ${
-        verdict === "pass"
+        feedback.verdict === "pass"
           ? "border-emerald-500/50 bg-emerald-500/5"
-          : verdict === "fail"
+          : feedback.verdict === "fail"
             ? "border-red-500/50 bg-red-500/5"
             : "border-white/10 bg-white/[0.02]"
       }`}
@@ -142,34 +261,10 @@ function Card({ item }: { item: ReviewItem }) {
       <p className="mb-2 truncate text-sm text-white/90" title={item.name}>
         {item.name}
       </p>
-      <div className="mb-2 flex gap-2">
-        <button
-          onClick={() => setVerdictAndSave("pass")}
-          className={`flex-1 rounded px-2 py-1 text-xs ${
-            verdict === "pass" ? "bg-emerald-500 text-black" : "bg-white/10 text-white/70"
-          }`}
-        >
-          Pass
-        </button>
-        <button
-          onClick={() => setVerdictAndSave("fail")}
-          className={`flex-1 rounded px-2 py-1 text-xs ${
-            verdict === "fail" ? "bg-red-500 text-black" : "bg-white/10 text-white/70"
-          }`}
-        >
-          Fail
-        </button>
-      </div>
-      <textarea
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        onBlur={() => save(verdict, comment)}
-        placeholder="Fail comment..."
-        rows={2}
-        className="w-full resize-none rounded border border-white/10 bg-black/50 px-2 py-1 text-xs text-white outline-none focus:border-cyan-400"
-      />
-      {saving && <p className="mt-1 text-[10px] text-white/30">saving...</p>}
-      {dialogOpen && <ViewDialog item={item} onClose={() => setDialogOpen(false)} />}
+      <FeedbackControls feedback={feedback} />
+      {dialogOpen && (
+        <ViewDialog item={item} feedback={feedback} onClose={() => setDialogOpen(false)} />
+      )}
     </div>
   );
 }
