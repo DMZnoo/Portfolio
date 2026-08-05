@@ -17,7 +17,7 @@ export default async function EquipmentReviewPage() {
   const { data, error } = await supabasePublic()
     .from("equipment_demo_previews")
     .select(
-      "id, slug, name, category, video_path_side, video_path_orbit, verdict, comment, feedback_image_path"
+      "id, slug, name, category, video_path_side, video_path_orbit, verdict, comment, feedback_image_paths, feedback_image_path"
     )
     .order("category")
     .order("name");
@@ -53,7 +53,14 @@ export default async function EquipmentReviewPage() {
     comment: row.comment,
     videoUrlSide: row.video_path_side ? publicUrl(row.video_path_side) : null,
     videoUrlOrbit: row.video_path_orbit ? publicUrl(row.video_path_orbit) : null,
-    feedbackImageUrl: row.feedback_image_path ? publicUrl(row.feedback_image_path) : null,
+    // One row per slug here, so there is no cross-round history to gather —
+    // every attachment belongs to this card and can be detached from it.
+    attachments: (row.feedback_image_paths?.length
+      ? row.feedback_image_paths
+      : row.feedback_image_path
+        ? [row.feedback_image_path]
+        : []
+    ).map((path: string) => ({ path, url: publicUrl(path), own: true })),
     reference: findExerciseReference(row.name, row.slug),
   }));
 

@@ -16,8 +16,26 @@ export type ReviewItem = {
   comment: string | null;
   videoUrlSide: string | null;
   videoUrlOrbit: string | null;
-  feedbackImageUrl: string | null;
+  attachments: Attachment[];
   reference: ExerciseReference | null;
+};
+
+/**
+ * A reviewer-uploaded image.
+ *
+ * `own` marks an attachment that belongs to the row this card writes to, so it
+ * can be detached here. On the round-based surface a card also shows images
+ * attached during EARLIER rounds of the same exercise: those rows are history
+ * and are shown read-only, but they have to be shown. Attachments used to be
+ * read off the displayed row alone, and since every sync writes a fresh row
+ * per exercise, that meant every image the reviewer had ever uploaded became
+ * invisible the moment the next round landed.
+ */
+export type Attachment = {
+  path: string;
+  url: string;
+  round?: number;
+  own: boolean;
 };
 
 // Mounts the <video> element only while the card is near the viewport, so
@@ -206,19 +224,20 @@ function AutoGrowTextarea({
 type FeedbackState = {
   verdict: "pending" | "pass" | "fail";
   comment: string;
-  imageUrl: string | null;
+  attachments: Attachment[];
   saving: boolean;
   uploading: boolean;
   setVerdictAndSave: (next: "pass" | "fail") => void;
   setComment: (value: string) => void;
   saveComment: () => void;
-  uploadImage: (file: File) => void;
+  uploadImages: (files: File[]) => void;
+  removeAttachment: (path: string) => void;
 };
 
 function useFeedback(item: ReviewItem): FeedbackState {
   const [verdict, setVerdict] = useState(item.verdict);
   const [comment, setComment] = useState(item.comment ?? "");
-  const [imageUrl, setImageUrl] = useState(item.feedbackImageUrl);
+  const [attachments, setAttachments] = useState(item.attachments);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -243,30 +262,51 @@ function useFeedback(item: ReviewItem): FeedbackState {
     save(resolved, comment);
   }
 
-  async function uploadImage(file: File) {
+  async function uploadImages(files: File[]) {
+    if (files.length === 0) return;
     setUploading(true);
     const formData = new FormData();
     formData.append("id", item.id);
-    formData.append("file", file);
     formData.append("source", item.source ?? "rounds");
+    for (const file of files) formData.append("file", file);
     const res = await fetch("/api/review/upload", { method: "POST", body: formData });
     if (res.ok) {
-      const { publicUrl } = await res.json();
-      setImageUrl(publicUrl);
+      const { paths, publicUrls } = (await res.json()) as {
+        paths: string[];
+        publicUrls: string[];
+      };
+      // The response carries this row's full list, so history from other
+      // rounds is preserved by rebuilding around it rather than replacing.
+      const own: Attachment[] = paths.map((path, index) => ({
+        path,
+        url: publicUrls[index],
+        own: true,
+      }));
+      setAttachments((current) => [...current.filter((a) => !a.own), ...own]);
     }
     setUploading(false);
+  }
+
+  async function removeAttachment(path: string) {
+    setAttachments((current) => current.filter((a) => a.path !== path));
+    await fetch("/api/review/upload", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: item.id, path, source: item.source ?? "rounds" }),
+    });
   }
 
   return {
     verdict,
     comment,
-    imageUrl,
+    attachments,
     saving,
     uploading,
     setVerdictAndSave,
     setComment,
     saveComment: () => save(verdict, comment),
-    uploadImage,
+    uploadImages,
+    removeAttachment,
   };
 }
 
@@ -305,10 +345,10 @@ function FeedbackControls({ feedback }: { feedback: FeedbackState }) {
           ref={fileInputRef}
           type="file"
           accept="image/*"
+          multiple
           className="hidden"
           onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) feedback.uploadImage(file);
+            feedback.uploadImages(Array.from(e.target.files ?? []));
             e.target.value = "";
           }}
         />
@@ -316,14 +356,39 @@ function FeedbackControls({ feedback }: { feedback: FeedbackState }) {
           onClick={() => fileInputRef.current?.click()}
           className="w-full rounded border border-dashed border-white/20 px-2 py-1 text-xs text-white/60 hover:border-cyan-400 hover:text-white"
         >
-          {feedback.uploading ? "Uploading..." : feedback.imageUrl ? "Replace feedback image" : "Attach feedback image"}
+          {feedback.uploading
+            ? "Uploading..."
+            : feedback.attachments.length > 0
+              ? `Add more images (${feedback.attachments.length} attached)`
+              : "Attach feedback images"}
         </button>
-        {feedback.imageUrl && (
-          <img
-            src={feedback.imageUrl}
-            alt="Feedback attachment"
-            className="mt-2 max-h-40 w-full rounded object-contain"
-          />
+        {feedback.attachments.length > 0 && (
+          <div className="mt-2 grid grid-cols-3 gap-1.5">
+            {feedback.attachments.map((attachment) => (
+              <div key={attachment.path} className="group relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={attachment.url}
+                  alt="Feedback attachment"
+                  className="aspect-square w-full rounded bg-black object-cover"
+                />
+                {attachment.own ? (
+                  <button
+                    type="button"
+                    aria-label="Remove attachment"
+                    onClick={() => feedback.removeAttachment(attachment.path)}
+                    className="absolute right-0.5 top-0.5 hidden rounded bg-black/80 px-1 text-[10px] leading-4 text-white/80 hover:text-red-400 group-hover:block"
+                  >
+                    ×
+                  </button>
+                ) : (
+                  <span className="absolute bottom-0.5 left-0.5 rounded bg-black/80 px-1 text-[9px] text-white/50">
+                    r{attachment.round}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
         )}
       </div>
       {(feedback.saving || feedback.uploading) && (
@@ -386,6 +451,23 @@ function ViewDialog({
     ),
   }));
 
+  // Uploads land here live, so the carousel reads from feedback state rather
+  // than the item it was built from.
+  const attachmentSlides: Slide[] = feedback.attachments.map((attachment, index) => ({
+    key: attachment.path,
+    label: attachment.own
+      ? `Note ${index + 1}`
+      : `Note ${index + 1} · round ${attachment.round}`,
+    render: () => (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={attachment.url}
+        alt={`Feedback note ${index + 1}`}
+        className="h-full w-full bg-black object-contain"
+      />
+    ),
+  }));
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto overscroll-contain bg-black/80 p-4"
@@ -405,7 +487,7 @@ function ViewDialog({
           </button>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Carousel title="Render" slides={renderSlides} />
           <div>
             <Carousel title="Reference" slides={referenceSlides} />
@@ -417,6 +499,16 @@ function ViewDialog({
             ) : (
               <p className="mt-2 text-[10px] uppercase tracking-wide text-white/40">
                 No reference matched for “{item.name}”
+              </p>
+            )}
+          </div>
+          <div>
+            <Carousel title="Your notes" slides={attachmentSlides} />
+            {attachmentSlides.length > 0 && (
+              <p className="mt-2 text-[10px] uppercase tracking-wide text-white/40">
+                {feedback.attachments.length} attached
+                {feedback.attachments.some((a) => !a.own) &&
+                  " · dimmed labels are from earlier rounds"}
               </p>
             )}
           </div>
