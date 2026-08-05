@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseAdmin, PREVIEW_BUCKET } from "@/lib/supabase";
+import { supabaseAdmin, PREVIEW_BUCKET, reviewTable } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const id = formData.get("id");
   const file = formData.get("file");
+  const source = formData.get("source");
 
   if (typeof id !== "string" || !id || !(file instanceof File)) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
@@ -27,7 +28,7 @@ export async function POST(request: NextRequest) {
   }
 
   const { error: updateError } = await admin
-    .from("exercise_demo_reviews")
+    .from(reviewTable(source))
     .update({ feedback_image_path: path })
     .eq("id", id);
 

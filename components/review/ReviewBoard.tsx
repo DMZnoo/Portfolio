@@ -6,7 +6,10 @@ import type { ExerciseReference } from "@/lib/exerciseReference";
 export type ReviewItem = {
   id: string;
   page: string;
-  round: number;
+  // Rounds belong to the batch-review surface only; /review/equipment publishes
+  // one row per slug with no round at all.
+  round?: number;
+  source?: "rounds" | "equipment";
   slug: string;
   name: string;
   verdict: "pending" | "pass" | "fail";
@@ -224,7 +227,12 @@ function useFeedback(item: ReviewItem): FeedbackState {
     await fetch("/api/review/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: item.id, verdict: nextVerdict, comment: nextComment }),
+      body: JSON.stringify({
+        id: item.id,
+        verdict: nextVerdict,
+        comment: nextComment,
+        source: item.source ?? "rounds",
+      }),
     });
     setSaving(false);
   }
@@ -240,6 +248,7 @@ function useFeedback(item: ReviewItem): FeedbackState {
     const formData = new FormData();
     formData.append("id", item.id);
     formData.append("file", file);
+    formData.append("source", item.source ?? "rounds");
     const res = await fetch("/api/review/upload", { method: "POST", body: formData });
     if (res.ok) {
       const { publicUrl } = await res.json();
@@ -478,7 +487,7 @@ export default function ReviewBoard({ items }: { items: ReviewItem[] }) {
   const grouped = useMemo(() => {
     const map = new Map<
       string,
-      { round: number; active: ReviewItem[]; approved: ReviewItem[] }
+      { round?: number; active: ReviewItem[]; approved: ReviewItem[] }
     >();
     for (const item of items) {
       if (!map.has(item.page)) {
@@ -488,7 +497,9 @@ export default function ReviewBoard({ items }: { items: ReviewItem[] }) {
       // Rows are the latest per exercise, so a page can straddle rounds while
       // one wave is re-rendered and the rest sit still. Label it with the
       // newest round present.
-      bucket.round = Math.max(bucket.round, item.round);
+      if (item.round !== undefined) {
+        bucket.round = Math.max(bucket.round ?? item.round, item.round);
+      }
       (item.verdict === "pass" ? bucket.approved : bucket.active).push(item);
     }
     return Array.from(map.entries()).sort(([a], [b]) => a.localeCompare(b));
@@ -499,7 +510,9 @@ export default function ReviewBoard({ items }: { items: ReviewItem[] }) {
       {grouped.map(([page, { round, active, approved }]) => (
         <section key={page}>
           <h2 className="mb-3 text-sm uppercase tracking-wide text-white/60">
-            {page} — round {round} ({active.length} to review, {approved.length} approved)
+            {page}
+            {round !== undefined && ` — round ${round}`} ({active.length} to review,{" "}
+            {approved.length} approved)
           </h2>
           {active.length > 0 ? (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

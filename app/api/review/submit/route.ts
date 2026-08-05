@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase";
+import { supabaseAdmin, reviewTable } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
-  const { id, verdict, comment } = await request.json();
+  const { id, verdict, comment, source } = await request.json();
 
   if (!id || !["pass", "fail", "pending"].includes(verdict)) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
 
   const { error } = await supabaseAdmin()
-    .from("exercise_demo_reviews")
+    .from(reviewTable(source))
     .update({
       verdict,
       comment: comment ?? null,
