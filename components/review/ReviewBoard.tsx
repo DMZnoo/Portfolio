@@ -35,6 +35,8 @@ export type Attachment = {
   path: string;
   url: string;
   round?: number;
+  /** Shown instead of a round badge for archived equipment feedback. */
+  label?: string;
   own: boolean;
 };
 
@@ -383,7 +385,7 @@ function FeedbackControls({ feedback }: { feedback: FeedbackState }) {
                   </button>
                 ) : (
                   <span className="absolute bottom-0.5 left-0.5 rounded bg-black/80 px-1 text-[9px] text-white/50">
-                    r{attachment.round}
+                    {attachment.label ?? `r${attachment.round}`}
                   </span>
                 )}
               </div>
@@ -457,7 +459,7 @@ function ViewDialog({
     key: attachment.path,
     label: attachment.own
       ? `Note ${index + 1}`
-      : `Note ${index + 1} · round ${attachment.round}`,
+      : `Note ${index + 1} · ${attachment.label ?? `round ${attachment.round}`}`,
     render: () => (
       // eslint-disable-next-line @next/next/no-img-element
       <img
@@ -508,7 +510,7 @@ function ViewDialog({
               <p className="mt-2 text-[10px] uppercase tracking-wide text-white/40">
                 {feedback.attachments.length} attached
                 {feedback.attachments.some((a) => !a.own) &&
-                  " · dimmed labels are from earlier rounds"}
+                  " · labelled ones are from an earlier build"}
               </p>
             )}
           </div>

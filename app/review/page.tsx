@@ -10,8 +10,14 @@ export default async function ReviewPage() {
   // longer hide each other behind one global max(round).
   const { data, error } = await supabasePublic()
     .from("exercise_demo_reviews_latest")
+    // No attachment columns here on purpose. This view was created as
+    // `select r.*`, which Postgres expands to a FIXED column list at creation
+    // time, so it does not carry columns added to the table afterwards —
+    // selecting feedback_image_paths from it fails even though the table has
+    // it. Attachments come from the base-table query below, which is where
+    // they have to come from anyway to span rounds.
     .select(
-      "id, page, exercise_slug, exercise_name, video_path_side, video_path_orbit, verdict, comment, feedback_image_paths, feedback_image_path, round"
+      "id, page, exercise_slug, exercise_name, video_path_side, video_path_orbit, verdict, comment, round"
     )
     .order("page")
     .order("exercise_name");

@@ -1,5 +1,5 @@
 import { supabasePublic, PREVIEW_BUCKET } from "@/lib/supabase";
-import ReviewBoard, { ReviewItem } from "@/components/review/ReviewBoard";
+import ReviewBoard, { ReviewItem, Attachment } from "@/components/review/ReviewBoard";
 import { findExerciseReference } from "@/lib/exerciseReference";
 
 export const dynamic = "force-dynamic";
@@ -13,14 +13,40 @@ export const dynamic = "force-dynamic";
  * every other slug along. Here there are no rounds — one row per slug, replaced
  * on every rebuild.
  */
+// A dynamic .select() string erases the generated row type, so state the shape
+// once here rather than casting at every field.
+type PreviewRow = {
+  id: string;
+  slug: string;
+  name: string;
+  category: string;
+  video_path_side: string | null;
+  video_path_orbit: string | null;
+  verdict: string;
+  comment: string | null;
+  feedback_image_paths: string[] | null;
+  feedback_image_path: string | null;
+  feedback_history?: unknown;
+};
+
+const BASE_COLUMNS =
+  "id, slug, name, category, video_path_side, video_path_orbit, verdict, comment, feedback_image_paths, feedback_image_path";
+
 export default async function EquipmentReviewPage() {
-  const { data, error } = await supabasePublic()
-    .from("equipment_demo_previews")
-    .select(
-      "id, slug, name, category, video_path_side, video_path_orbit, verdict, comment, feedback_image_paths, feedback_image_path"
-    )
-    .order("category")
-    .order("name");
+  const load = (columns: string) =>
+    supabasePublic()
+      .from("equipment_demo_previews")
+      .select(columns)
+      .order("category")
+      .order("name");
+
+  // Deploys and migrations land independently, and a select naming a column
+  // the database does not have yet fails the WHOLE page — the /review view
+  // taught us that one. Ask for the archive, fall back to the base columns if
+  // it isn't there.
+  let { data, error } = await load(`${BASE_COLUMNS}, feedback_history`);
+  if (error) ({ data, error } = await load(BASE_COLUMNS));
+  const rows = (data ?? []) as unknown as PreviewRow[];
 
   if (error) {
     return (
@@ -30,7 +56,7 @@ export default async function EquipmentReviewPage() {
     );
   }
 
-  if (!data || data.length === 0) {
+  if (rows.length === 0) {
     return (
       <main className="min-h-screen bg-black p-8 font-mono text-white">
         Nothing published yet. Run{" "}
@@ -43,7 +69,18 @@ export default async function EquipmentReviewPage() {
   const publicUrl = (path: string) =>
     `${supabaseUrl}/storage/v1/object/public/${PREVIEW_BUCKET}/${path}`;
 
-  const items: ReviewItem[] = data.map((row) => ({
+  type ArchivedFeedback = { comment?: string | null; image_paths?: string[] | null };
+  const archivedAttachments = (history: unknown): Attachment[] =>
+    (Array.isArray(history) ? (history as ArchivedFeedback[]) : []).flatMap((entry, index) =>
+      (entry.image_paths ?? []).map((path) => ({
+        path,
+        url: publicUrl(path),
+        label: `build ${index + 1}`,
+        own: false,
+      }))
+    );
+
+  const items: ReviewItem[] = rows.map((row) => ({
     id: row.id,
     page: row.category,
     source: "equipment",
@@ -53,14 +90,19 @@ export default async function EquipmentReviewPage() {
     comment: row.comment,
     videoUrlSide: row.video_path_side ? publicUrl(row.video_path_side) : null,
     videoUrlOrbit: row.video_path_orbit ? publicUrl(row.video_path_orbit) : null,
-    // One row per slug here, so there is no cross-round history to gather —
-    // every attachment belongs to this card and can be detached from it.
-    attachments: (row.feedback_image_paths?.length
-      ? row.feedback_image_paths
-      : row.feedback_image_path
-        ? [row.feedback_image_path]
-        : []
-    ).map((path: string) => ({ path, url: publicUrl(path), own: true })),
+    // One row per slug, so the live attachments all belong to this card. A
+    // republish clears the card and folds what it cleared into feedback_history
+    // — those images stay visible, read-only, so a note that has already been
+    // acted on is still there to check the new build against.
+    attachments: [
+      ...archivedAttachments(row.feedback_history),
+      ...(row.feedback_image_paths?.length
+        ? row.feedback_image_paths
+        : row.feedback_image_path
+          ? [row.feedback_image_path]
+          : []
+      ).map((path: string) => ({ path, url: publicUrl(path), own: true })),
+    ],
     reference: findExerciseReference(row.name, row.slug),
   }));
 
