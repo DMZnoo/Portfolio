@@ -16,11 +16,17 @@ export function supabaseAdmin() {
 
 export const PREVIEW_BUCKET = "exercise-demo-previews";
 
+// The UI captures behind /app-preview live in their own bucket: they are
+// republished wholesale on every snapshot run, so keeping them out of the demo
+// bucket means a re-sync can never disturb a rendered demo.
+export const APP_PREVIEW_BUCKET = "app-preview";
+
 // The two review surfaces write through the same endpoints. Whitelisted rather
 // than passed through, so a crafted `source` can never name an arbitrary table.
 export const REVIEW_TABLES = {
   rounds: "exercise_demo_reviews",
   equipment: "equipment_demo_previews",
+  appPreview: "app_preview_screens",
 } as const;
 
 export type ReviewSource = keyof typeof REVIEW_TABLES;
