@@ -42,8 +42,9 @@ export const profile = {
   ],
   nowWorking: {
     label: "Currently building",
-    text: "A modernized workout tracking iOS App for weight lifters with auto rep tracking using Core Motion on Apple Watch andinteractive 3D experiences with RealityKit.",
-    tag: undefined as string | undefined,
+    tag: "Xenitia",
+    href: "https://xenitia.app",
+    text: "Xenitia is a visual workout logger for iPhone and Apple Watch. Tap plates, stacks and racks instead of typing numbers, count reps from your wrist with Core Motion, and load your gym's equipment presets. Sessions post to a feed with friends and club challenges, insights are grounded in your own training, and your history imports from Strong or Hevy. Built in Swift 6 and SwiftUI on Supabase, with anatomical 3D exercise demos in RealityKit.",
   },
   links: {
     github: "https://github.com/DMZnoo",

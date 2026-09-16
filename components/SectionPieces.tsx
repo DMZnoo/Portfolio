@@ -80,6 +80,26 @@ export function PersonalProjects() {
 			>
 				{n.text}
 			</p>
+			<a
+				href={n.href}
+				target="_blank"
+				rel="noreferrer noopener"
+				style={{
+					display: "inline-flex",
+					alignItems: "baseline",
+					gap: 6,
+					marginTop: 14,
+					fontFamily: "'JetBrains Mono', monospace",
+					fontSize: 12.5,
+					fontWeight: 600,
+					letterSpacing: 0.5,
+					color: "#26c8eb",
+					textDecoration: "none",
+				}}
+			>
+				xenitia.app
+				<span aria-hidden="true">↗</span>
+			</a>
 		</div>
 	);
 }
