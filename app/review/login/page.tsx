@@ -10,6 +10,16 @@ function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // One gate covers every private board; go back to whichever one sent us
+  // here, but only to a path on this site (never "//host" or a full URL).
+  const requested = searchParams.get("next") ?? "";
+  const nextPath = /^\/(?!\/)/.test(requested) ? requested : "/review";
+  const heading = nextPath.startsWith("/android-review")
+    ? "Android Port Review"
+    : nextPath.startsWith("/app-preview")
+      ? "App Preview"
+      : "Exercise Demo Review";
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -27,7 +37,7 @@ function LoginForm() {
       return;
     }
 
-    router.push(searchParams.get("next") || "/review");
+    router.push(nextPath);
     router.refresh();
   }
 
@@ -37,7 +47,7 @@ function LoginForm() {
         onSubmit={handleSubmit}
         className="w-full max-w-sm rounded-lg border border-white/10 bg-white/5 p-8 font-mono"
       >
-        <h1 className="mb-6 text-lg text-white">Exercise Demo Review</h1>
+        <h1 className="mb-6 text-lg text-white">{heading}</h1>
         <input
           type="password"
           autoFocus

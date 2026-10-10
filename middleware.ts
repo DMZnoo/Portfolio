@@ -31,5 +31,9 @@ export const config = {
     "/api/review/:path*",
     "/app-preview",
     "/app-preview/:path*",
+    // Same reason as /app-preview: the bare path is the one people visit.
+    "/android-review",
+    "/android-review/:path*",
+    "/api/android-review/:path*",
   ],
 };
